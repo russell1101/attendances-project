@@ -23,3 +23,6 @@ bin/
 
 # --- jndi設定 ---
 src/main/webapp/META-INF/context.xml
+
+# 忽略資料庫連線測試程式
+**/TestDBServlet.java
