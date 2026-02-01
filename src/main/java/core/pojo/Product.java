@@ -13,6 +13,33 @@ public class Product {
 	private Timestamp removedAt;
 	private Timestamp createdAt;
 	private Timestamp updatedAt;
+	private byte[] imageData;
+	private String description;
+	private Integer validDays;
+
+	public Integer getValidDays() {
+		return validDays;
+	}
+
+	public void setValidDays(Integer validDays) {
+		this.validDays = validDays;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public byte[] getImageData() {
+		return imageData;
+	}
+
+	public void setImageData(byte[] imageData) {
+		this.imageData = imageData;
+	}
 
 	public Long getProductId() {
 		return productId;
