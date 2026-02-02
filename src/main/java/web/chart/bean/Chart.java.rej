@@ -1,0 +1,22 @@
+diff a/src/main/java/web/chart/bean/Chart.java b/src/main/java/web/chart/bean/Chart.java	(rejected hunks)
+@@ -67,16 +67,16 @@
+ 	public void setWorkingHours(List<Integer> workingHours) {
+ 		this.workingHours = workingHours;
+ 	}
+-	public List<Double> getCheckInTimes() {
++	public List<String> getCheckInTimes() {
+ 		return checkInTimes;
+ 	}
+-	public void setCheckInTimes(List<Double> checkInTimes) {
++	public void setCheckInTimes(List<String> checkInTimes) {
+ 		this.checkInTimes = checkInTimes;
+ 	}
+-	public List<Double> getCheckOutTimes() {
++	public List<String> getCheckOutTimes() {
+ 		return checkOutTimes;
+ 	}
+-	public void setCheckOutTimes(List<Double> checkOutTimes) {
++	public void setCheckOutTimes(List<String> checkOutTimes) {
+ 		this.checkOutTimes = checkOutTimes;
+ 	}
+ 	public int getTotalLateCounts() {
