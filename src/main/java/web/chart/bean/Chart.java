@@ -17,8 +17,8 @@ public class Chart {
 	private List<Integer> workingHours; // 工時 X軸
 	
 	// 散佈圖-打卡紀錄
-	private List<Double> checkInTimes; //  上班打卡時間 
-	private List<Double> checkOutTimes; // 下班打卡時間
+	private List<String> checkInTimes; //  上班打卡時間 
+  private List<String> checkOutTimes; // 下班打卡時間
 	
 	private int totalLateCounts; // 總遲到人次
 	private double attendRate; // 出勤率

@@ -1,5 +1,3 @@
-// rci-attendance-charts.js - 出勤管理圖表初始化
-
 // 儲存圖表實例
 let chartInstances = {
     pie: null,
@@ -36,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // 監聽視窗大小變化（加入防抖，避免頻繁觸發）
     window.addEventListener('resize', debounce(resizeAllCharts, 150));
 
-    // 監聽 sidebar 展開/收合（如果有的話）
+    // 監聽 sidebar 展開/收合
     const sidebar = document.getElementById('sidebar');
     if (sidebar) {
         const observer = new MutationObserver(debounce(resizeAllCharts, 300));
@@ -57,16 +55,65 @@ document.addEventListener('DOMContentLoaded', function() {
         btn.addEventListener('click', function() {
             filterBtns.forEach(b => b.classList.remove('active'));
             this.classList.add('active');
-            // TODO: 根據選擇的範圍重新載入資料
         });
+    });
+
+    // 搜尋按鈕 
+    document.getElementById('searchBtn').addEventListener('click', function() {
+        var deptId = document.getElementById('departmentSelect').value;
+        var empId = document.getElementById('employeeSelect').value;
+        var startDate = document.getElementById('startDate').value;
+        var endDate = document.getElementById('endDate').value;
+
+        fetch('chart?startDate=' + startDate + '&endDate=' + endDate + '&deptId=' + deptId + '&empId=' + empId)
+            .then(function(res) {
+                return res.json();
+            })
+            .then(function(data) {
+                // 更新圓餅圖
+                updatePieChart(data.onTime, data.late, data.absent);
+
+                // 更新橫條圖
+                updateBarHorizontalChart(data.deptName, data.lateCounts);
+
+                // 更新直條圖 (有資料才更新)
+                if (data.workingDates && data.workingHours) {
+                    updateBarVerticalChart(data.workingDates, data.workingHours);
+                }
+
+                // 更新散佈圖 (時間字串轉數字)
+                if (data.checkInTimes && data.checkOutTimes) {
+                    var inData = [];
+                    var outData = [];
+                    for (var i = 0; i < data.checkInTimes.length; i++) {
+                        inData.push([i + 1, timeToNumber(data.checkInTimes[i])]);
+                    }
+                    for (var i = 0; i < data.checkOutTimes.length; i++) {
+                        outData.push([i + 1, timeToNumber(data.checkOutTimes[i])]);
+                    }
+                    updateScatterChart(inData, outData);
+                }
+
+                // 5. 更新統計
+                updateStats(data.totalLateCounts, data.attendRate, data.noChecked);
+            })
+            .catch(function(err) {
+                console.log('錯誤:', err);
+            });
     });
 });
 
-// === 1. 出勤狀態圓餅圖 ===
+// 時間字串轉數字 
+function timeToNumber(timeStr) {
+    var parts = timeStr.split(":");
+    return parseInt(parts[0]) + parseInt(parts[1]) / 60;
+}
+
+// 圓餅圖
 function initPieChart() {
     const chartDom = document.getElementById('chartPie');
     const chart = echarts.init(chartDom);
-    chartInstances.pie = chart; // 儲存實例
+    chartInstances.pie = chart;
 
     const option = {
         tooltip: {
@@ -83,7 +130,7 @@ function initPieChart() {
             {
                 name: '出勤狀態',
                 type: 'pie',
-                radius: ['40%', '70%'], // 環形圖
+                radius: ['40%', '70%'],
                 center: ['50%', '45%'],
                 avoidLabelOverlap: false,
                 itemStyle: {
@@ -106,9 +153,9 @@ function initPieChart() {
                     show: false
                 },
                 data: [
-                    { value: 850, name: '準時' },
-                    { value: 85, name: '遲到' },
-                    { value: 15, name: '曠職' }
+                    { value: 0, name: '準時' },
+                    { value: 0, name: '遲到' },
+                    { value: 0, name: '曠職' }
                 ]
             }
         ]
@@ -117,11 +164,11 @@ function initPieChart() {
     chart.setOption(option);
 }
 
-// === 2. 部門/人員遲到排行 (Horizontal Bar) ===
+// 遲到排行
 function initBarHorizontalChart() {
     const chartDom = document.getElementById('chartBarHorizontal');
     const chart = echarts.init(chartDom);
-    chartInstances.barHorizontal = chart; // 儲存實例
+    chartInstances.barHorizontal = chart;
 
     const option = {
         tooltip: {
@@ -144,7 +191,7 @@ function initBarHorizontalChart() {
         },
         yAxis: {
             type: 'category',
-            data: ['人資部', '財務部', '行銷部', '業務部', '研發部'],
+            data: [],
             axisLabel: {
                 fontSize: 12
             }
@@ -154,7 +201,7 @@ function initBarHorizontalChart() {
             {
                 name: '遲到次數',
                 type: 'bar',
-                data: [8, 12, 15, 22, 28],
+                data: [],
                 itemStyle: {
                     borderRadius: [0, 4, 4, 0]
                 },
@@ -170,20 +217,11 @@ function initBarHorizontalChart() {
     chart.setOption(option);
 }
 
-// === 3. 工時統計圖 (Vertical Bar) ===
+// 工時統計圖
 function initBarVerticalChart() {
     const chartDom = document.getElementById('chartBarVertical');
     const chart = echarts.init(chartDom);
-    chartInstances.barVertical = chart; // 儲存實例
-
-    // 模擬一個月的工時資料
-    const dates = [];
-    const workHours = [];
-    for (let i = 1; i <= 22; i++) {
-        dates.push(`11/${i.toString().padStart(2, '0')}`);
-        // 隨機產生 4-12 小時的工時
-        workHours.push((Math.random() * 4 + 6).toFixed(1));
-    }
+    chartInstances.barVertical = chart;
 
     const option = {
         tooltip: {
@@ -199,7 +237,7 @@ function initBarVerticalChart() {
         },
         xAxis: {
             type: 'category',
-            data: dates,
+            data: [],
             axisLabel: {
                 rotate: 45,
                 fontSize: 10
@@ -214,25 +252,23 @@ function initBarVerticalChart() {
                 formatter: '{value}h'
             }
         },
-        // 標準工時線
-        markLine: {
-            silent: true,
-            data: [
-                {
-                    yAxis: 8,
-                    lineStyle: { color: '#ffc107', type: 'dashed' },
-                    label: { formatter: '標準 8h' }
-                }
-            ]
-        },
         series: [
             {
                 name: '工時',
                 type: 'bar',
-                data: workHours,
+                data: [],
+                markLine: {
+                    silent: true,
+                    data: [
+                        {
+                            yAxis: 8,
+                            lineStyle: { color: '#ffc107', type: 'dashed' },
+                            label: { formatter: '標準 8h' }
+                        }
+                    ]
+                },
                 itemStyle: {
                     color: function(params) {
-                        // 低於 8 小時用不同顏色
                         return params.value < 8 ? '#ffc107' : '#00b8d9';
                     },
                     borderRadius: [4, 4, 0, 0]
@@ -244,25 +280,11 @@ function initBarVerticalChart() {
     chart.setOption(option);
 }
 
-// === 4. 打卡時間分佈圖 (Scatter) ===
+// 打卡時間分佈圖
 function initScatterChart() {
     const chartDom = document.getElementById('chartScatter');
     const chart = echarts.init(chartDom);
-    chartInstances.scatter = chart; // 儲存實例
-
-    // 模擬打卡時間資料 [日期index, 時間(小數)]
-    const punchInData = [];  // 上班打卡
-    const punchOutData = []; // 下班打卡
-
-    for (let day = 1; day <= 22; day++) {
-        // 上班時間 8:30-9:30 之間
-        const inTime = 8.5 + Math.random() * 1;
-        punchInData.push([day, inTime]);
-        
-        // 下班時間 17:30-20:00 之間
-        const outTime = 17.5 + Math.random() * 2.5;
-        punchOutData.push([day, outTime]);
-    }
+    chartInstances.scatter = chart;
 
     const option = {
         tooltip: {
@@ -272,7 +294,7 @@ function initScatterChart() {
                 const time = params.value[1];
                 const hours = Math.floor(time);
                 const minutes = Math.round((time - hours) * 60);
-                return `11/${day.toString().padStart(2, '0')}<br/>${params.seriesName}: ${hours}:${minutes.toString().padStart(2, '0')}`;
+                return '第' + day + '天<br/>' + params.seriesName + ': ' + hours + ':' + (minutes < 10 ? '0' : '') + minutes;
             }
         },
         legend: {
@@ -293,7 +315,7 @@ function initScatterChart() {
             max: 23,
             axisLabel: {
                 formatter: function(value) {
-                    return value > 0 ? `11/${value}` : '';
+                    return value > 0 ? value + '日' : '';
                 }
             }
         },
@@ -308,13 +330,12 @@ function initScatterChart() {
                 }
             }
         },
-        // 標準上下班時間線
         series: [
             {
                 name: '上班打卡',
                 type: 'scatter',
                 symbolSize: 10,
-                data: punchInData,
+                data: [],
                 itemStyle: {
                     color: '#00b8d9'
                 },
@@ -333,7 +354,7 @@ function initScatterChart() {
                 name: '下班打卡',
                 type: 'scatter',
                 symbolSize: 10,
-                data: punchOutData,
+                data: [],
                 itemStyle: {
                     color: '#28a745'
                 },
@@ -354,7 +375,7 @@ function initScatterChart() {
     chart.setOption(option);
 }
 
-// === 更新圖表資料的函式 (供後端呼叫) ===
+// === 更新圖表資料的函式 ===
 function updatePieChart(onTime, late, absent) {
     const chart = echarts.getInstanceByDom(document.getElementById('chartPie'));
     if (chart) {
@@ -402,7 +423,6 @@ function updateScatterChart(punchInData, punchOutData) {
     }
 }
 
-// 更新統計數據
 function updateStats(lateCount, attendanceRate, missingCount) {
     document.getElementById('statLateCount').textContent = lateCount;
     document.getElementById('statAttendanceRate').textContent = attendanceRate + '%';

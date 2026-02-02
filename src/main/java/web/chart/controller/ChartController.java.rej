@@ -1,0 +1,18 @@
+diff a/src/main/java/web/chart/controller/ChartController.java b/src/main/java/web/chart/controller/ChartController.java	(rejected hunks)
+@@ -19,11 +19,11 @@
+ 	
+ 	@Override
+ 	public void init() throws ServletException {
+-//		try {
+-//		
+-//		} catch (NamingException e) {
+-//			e.printStackTrace();
+-//		}
++		try {
++			service = new ChartServiceImpl();
++		} catch (NamingException e) {
++			e.printStackTrace();
++		}
+ 	}
+ 	
+ 	

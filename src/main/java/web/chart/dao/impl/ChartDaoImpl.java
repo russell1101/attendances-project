@@ -144,8 +144,8 @@ public class ChartDaoImpl implements ChartDao {
 					+ "AND work_date BETWEEN ? AND ?"
 					+ "ORDER BY work_date";
 		
-		List<Double> inTimes = new ArrayList<Double>();
-		List<Double> outTimes = new ArrayList<Double>();
+		List<String> inTimes = new ArrayList<String>();
+		List<String> outTimes = new ArrayList<String>();
 		
 		try (
 			Connection conn = ds.getConnection();
@@ -157,23 +157,75 @@ public class ChartDaoImpl implements ChartDao {
 			
 			try(ResultSet rs = pstmt.executeQuery()){
 				while(rs.next()) {
-					String instr = rs.getString("clock_in_time");
-					String outstr = rs.getString("clock_out_time");
+					String inTime = rs.getString("clock_in_time");
+					String outTime = rs.getString("clock_out_time");
+					
+					 if (inTime != null) {
+		                 inTimes.add(inTime);
+		             }
+		             if (outTime != null) {
+		                 outTimes.add(outTime);
+		             }
 				}
 			}
 			
 		} catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
 		}
 		
-		
-		return null;
+		Chart chart = new Chart();
+		chart.setCheckInTimes(inTimes);
+		chart.setCheckOutTimes(outTimes);
+		return chart;
 	}
-
+	
+	// 統計摘要
 	@Override
 	public Chart getSummaryData(String startDate, String endDate, String deptId) {
-		// TODO Auto-generated method stub
-		return null;
+		String sql = "SELECT "
+	            + "SUM(CASE WHEN ar.clock_in_status = 'LATE' THEN 1 ELSE 0 END) AS totalLate, "
+	            + "COUNT(*) AS total, "
+	            + "SUM(CASE WHEN ar.clock_in_status != 'MISSING' THEN 1 ELSE 0 END) AS attended, "
+	            + "SUM(CASE WHEN ar.clock_in_status = 'MISSING' THEN 1 ELSE 0 END) AS noChecked "
+	            + "FROM attendance_records ar "
+	            + "JOIN employees e ON ar.employee_id = e.employee_id "
+	            + "WHERE ar.work_date BETWEEN ? AND ?";
+		if(deptId != null && !deptId.isEmpty()) {
+			sql+=" AND e.department_id = ?";
+		}
+		
+		try(
+			Connection conn = ds.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(sql)
+		){
+			pstmt.setString(1, startDate);
+			pstmt.setString(2, endDate);
+			
+			if(deptId !=null && !deptId.isEmpty()) {
+				pstmt.setString(3, deptId);
+			}
+			
+			try(ResultSet rs = pstmt.executeQuery()){
+				if(rs.next()) {
+					Chart chart = new Chart();
+					chart.setTotalLateCounts(rs.getInt("totalLate"));
+					chart.setNoChecked(rs.getInt("noChecked"));
+					
+					int total = rs.getInt("total");
+					int attended = rs.getInt("attended");
+					if(total > 0) {
+						chart.setAttendRate(attended *100.0 / total);
+					}else {
+						chart.setAttendRate(0);
+					}
+					return chart;
+				}
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return new Chart();
 	}
 	
 }
