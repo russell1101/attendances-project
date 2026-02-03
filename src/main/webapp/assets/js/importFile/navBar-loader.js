@@ -4,7 +4,6 @@ document.addEventListener("DOMContentLoaded", function() {
     const navBarContainer = document.querySelector('#navBar-placeholder');
     
     if (!navBarContainer) {
-        console.error("找不到 #navBar-placeholder 容器");
         return;
     }
     
@@ -16,7 +15,6 @@ document.addEventListener("DOMContentLoaded", function() {
             return response.text();
         })
         .then(data => {
-            console.log("NavBar HTML 載入成功");
             
             const tempDiv = document.createElement('div');
             tempDiv.innerHTML = data;
@@ -51,7 +49,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
 // 初始化 NavBar
 function initNavBar() {
-    console.log("初始化 NavBar...");
     
     if (typeof feather !== 'undefined') {
         feather.replace();
@@ -89,15 +86,12 @@ function initDesktopToggle() {
             
             const isNowExpanded = this.classList.contains('expanded');
             localStorage.setItem('sidebarExpanded', isNowExpanded);
-            // 這裡不再需要寫 logo.src = ... 
         }
     });
 }
 
 // 初始化手機選單
 function initMobileMenu() {
-    console.log("初始化手機選單...");
-    console.log("視窗寬度:", window.innerWidth);
     
     const sidebar = document.getElementById('sidebar');
     const sidebarToggle = document.getElementById('sidebarToggle');
@@ -113,7 +107,6 @@ function initMobileMenu() {
     sidebarToggle.addEventListener('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
-        console.log("漢堡選單被點擊");
         
         sidebar.classList.add('active');
         if (sidebarOverlay) {

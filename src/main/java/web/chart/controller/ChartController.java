@@ -9,21 +9,24 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.Gson;
+
+import web.chart.bean.Chart;
 import web.chart.service.ChartService;
 import web.chart.service.impl.ChartServiceImpl;
 
-@WebServlet()
+@WebServlet("/chart")
 public class ChartController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private ChartService service;
 	
 	@Override
 	public void init() throws ServletException {
-//		try {
-//		
-//		} catch (NamingException e) {
-//			e.printStackTrace();
-//		}
+		try {
+			service = new ChartServiceImpl();
+		} catch (NamingException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	
@@ -31,7 +34,20 @@ public class ChartController extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
+		String startDate = req.getParameter("startDate");
+		String endDate = req.getParameter("endDate");
+		String empIdStr = req.getParameter("deptId");
+		String deptIdStr = req.getParameter("deptId");
 		 
+		int empId = empIdStr !=null ? Integer.parseInt(empIdStr) : null;
+		int deptId = deptIdStr !=null ? Integer.parseInt(deptIdStr) : null;
 		
+		Chart chart = service.getChartAllData(startDate, endDate, deptId, empId);
+		
+		resp.setContentType("application/json");
+		
+		
+		Gson gson = new Gson();
+		resp.getWriter().write(gson.toJson(chart));
 	}
 }

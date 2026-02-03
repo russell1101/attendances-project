@@ -17,12 +17,12 @@ public class ChartDaoImpl implements ChartDao {
 	private DataSource ds;
 	
 	public ChartDaoImpl() throws NamingException {
-		ds = (DataSource) new InitialContext().lookup("java:comp/evn/jdbc/railway");
+		ds = (DataSource) new InitialContext().lookup("java:comp/env/jdbc/railway");
 	}
 	
 	//圓餅圖
 	@Override
-	public Chart getPie(String startDate, String endDate, String deptId) {
+	public Chart getPie(String startDate, String endDate, Integer deptId) {
 		String sql = "SELECT "
 	            + "SUM(CASE WHEN ar.clock_in_status = 'ON_TIME' THEN 1 ELSE 0 END) AS onTime, "
 	            + "SUM(CASE WHEN ar.clock_in_status = 'LATE' THEN 1 ELSE 0 END) AS late, "
@@ -31,7 +31,7 @@ public class ChartDaoImpl implements ChartDao {
 	            + "JOIN employees e ON ar.employee_id = e.employee_id "
 	            + "WHERE ar.work_date BETWEEN ? AND ?";
 		
-		if(deptId !=null && !deptId.isEmpty()) {
+		if(deptId !=null) {
 			sql +=" AND e.department_id = ?";
 		}
 		try(
@@ -40,8 +40,8 @@ public class ChartDaoImpl implements ChartDao {
 		){
 			pstmt.setString(1, startDate);
 			pstmt.setString(2, endDate);
-			if(deptId !=null && !deptId.isEmpty()) {
-				pstmt.setString(3, deptId);
+			if(deptId !=null) {
+				pstmt.setInt(3, deptId);
 			}
 			try(ResultSet rs = pstmt.executeQuery()){
 				if(rs.next()) {
@@ -99,7 +99,7 @@ public class ChartDaoImpl implements ChartDao {
 	
 	// 工時統計(長條圖)
 	@Override
-	public Chart getWorkingTime(String startDate, String endDate, String empId) {
+	public Chart getWorkingTime(String startDate, String endDate, Integer empId) {
 		String sql = "Select work_date, "
 				+ "TIMESTAMPDIFF(HOUR, clock_in_time, clock_out_time) AS workHour "
 				+ "FROM attendance_records "
@@ -115,7 +115,7 @@ public class ChartDaoImpl implements ChartDao {
 			Connection conn = ds.getConnection();
 			PreparedStatement pstmt = conn.prepareStatement(sql)					
 		){
-			pstmt.setString(1, empId);
+			pstmt.setInt(1, empId);
 			pstmt.setString(2, startDate);
 			pstmt.setString(3, endDate);
 			
@@ -137,12 +137,12 @@ public class ChartDaoImpl implements ChartDao {
 	
 	// 發散圖(打卡分布圖)
 	@Override
-	public Chart getCheckedStatus(String startDate, String endDate, String empId) {
-		String sql = "SELECT clock_in_time, clock_on_time "
-					+ "FROM attendeance_records "
-					+ "WHERE emploee_id = ? "
-					+ "AND work_date BETWEEN ? AND ?"
-					+ "ORDER BY work_date";
+	public Chart getCheckedStatus(String startDate, String endDate, Integer empId) {
+		String sql = "SELECT clock_in_time, clock_out_time "
+	            + "FROM attendance_records "
+	            + "WHERE employee_id = ? "
+	            + "AND work_date BETWEEN ? AND ? "
+	            + "ORDER BY work_date";
 		
 		List<String> inTimes = new ArrayList<String>();
 		List<String> outTimes = new ArrayList<String>();
@@ -151,7 +151,7 @@ public class ChartDaoImpl implements ChartDao {
 			Connection conn = ds.getConnection();
 			PreparedStatement pstmt = conn.prepareStatement(sql)
 		){
-			pstmt.setString(1, empId);
+			pstmt.setInt(1, empId);
 			pstmt.setString(2, startDate);
 			pstmt.setString(3, endDate);
 			
@@ -181,7 +181,7 @@ public class ChartDaoImpl implements ChartDao {
 	
 	// 統計摘要
 	@Override
-	public Chart getSummaryData(String startDate, String endDate, String deptId) {
+	public Chart getSummaryData(String startDate, String endDate, Integer deptId) {
 		String sql = "SELECT "
 	            + "SUM(CASE WHEN ar.clock_in_status = 'LATE' THEN 1 ELSE 0 END) AS totalLate, "
 	            + "COUNT(*) AS total, "
@@ -190,7 +190,7 @@ public class ChartDaoImpl implements ChartDao {
 	            + "FROM attendance_records ar "
 	            + "JOIN employees e ON ar.employee_id = e.employee_id "
 	            + "WHERE ar.work_date BETWEEN ? AND ?";
-		if(deptId != null && !deptId.isEmpty()) {
+		if(deptId != null) {
 			sql+=" AND e.department_id = ?";
 		}
 		
@@ -201,8 +201,8 @@ public class ChartDaoImpl implements ChartDao {
 			pstmt.setString(1, startDate);
 			pstmt.setString(2, endDate);
 			
-			if(deptId !=null && !deptId.isEmpty()) {
-				pstmt.setString(3, deptId);
+			if(deptId !=null) {
+				pstmt.setInt(3, deptId);
 			}
 			
 			try(ResultSet rs = pstmt.executeQuery()){

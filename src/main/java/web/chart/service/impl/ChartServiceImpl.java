@@ -15,7 +15,7 @@ public class ChartServiceImpl implements ChartService {
 	}
 
 	@Override
-	public Chart getChartAllData(String startDate, String endDate, String deptId, String empId) {
+	public Chart getChartAllData(String startDate, String endDate, Integer deptId, Integer empId) {
 		Chart chart = new Chart();
 		
 		// 圓餅圖
@@ -30,14 +30,14 @@ public class ChartServiceImpl implements ChartService {
 		chart.setLateCounts(rowBar.getLateCounts());
 		
 		// 直長條(選員工才查)
-		if(empId !=null && !empId.isEmpty()) {
+		if(empId !=null) {
 			Chart bar = dao.getWorkingTime(startDate, endDate, empId);
 			chart.setWorkingDates(bar.getWorkingDates());
 			chart.setWorkingHours(bar.getWorkingHours());
 		}
 		
 		// 散佈圖(選員工才查)
-		if(empId !=null && !empId.isEmpty()) {
+		if(empId !=null) {
 			Chart scatter = dao.getCheckedStatus(startDate, endDate, deptId);
 			chart.setCheckInTimes(scatter.getCheckInTimes());
 			chart.setCheckOutTimes(scatter.getCheckOutTimes());
