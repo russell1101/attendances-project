@@ -2,10 +2,10 @@ package web.chart.service.impl;
 
 import javax.naming.NamingException;
 
-import web.chart.bean.Chart;
 import web.chart.dao.ChartDao;
 import web.chart.dao.impl.ChartDaoImpl;
 import web.chart.service.ChartService;
+import web.chart.vo.Chart;
 
 public class ChartServiceImpl implements ChartService {
 	private ChartDao dao;

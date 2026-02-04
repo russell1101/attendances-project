@@ -11,9 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 
-import web.chart.bean.Chart;
 import web.chart.service.ChartService;
 import web.chart.service.impl.ChartServiceImpl;
+import web.chart.vo.Chart;
 
 @WebServlet("/chart")
 public class ChartController extends HttpServlet {

@@ -1,4 +1,4 @@
-package web.chart.bean;
+package web.chart.vo;
 
 import java.util.List;
 

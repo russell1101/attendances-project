@@ -10,8 +10,8 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-import web.chart.bean.Chart;
 import web.chart.dao.ChartDao;
+import web.chart.vo.Chart;
 
 public class ChartDaoImpl implements ChartDao {
 	private DataSource ds;
@@ -53,11 +53,13 @@ public class ChartDaoImpl implements ChartDao {
 					
 				}
 			}
+				Chart chart = new Chart();
+				return chart;
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		return new Chart();
+		return null;
 	}
 	
 	// 遲到排行
@@ -88,13 +90,14 @@ public class ChartDaoImpl implements ChartDao {
 					counts.add(rs.getInt("lateCount"));
 				}
 			}
+				Chart chart = new Chart();
+				chart.setDeptName(names);
+				chart.setLateCounts(counts);
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
-		Chart chart = new Chart();
-        chart.setDeptName(names);
-        chart.setLateCounts(counts);
-        return chart;
+		
+        return null;
 	}
 	
 	// 工時統計(長條圖)
@@ -125,14 +128,13 @@ public class ChartDaoImpl implements ChartDao {
 					hours.add(rs.getInt("workHour"));
 				}
 			}
+				Chart chart = new Chart();
+				chart.setWorkingDates(dates);
+				chart.setWorkingHours(hours);
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
-		Chart chart = new Chart();
-		chart.setWorkingDates(dates);
-		chart.setWorkingHours(hours);
-		
-		return chart;
+		return null;
 	}
 	
 	// 發散圖(打卡分布圖)
@@ -168,15 +170,13 @@ public class ChartDaoImpl implements ChartDao {
 		             }
 				}
 			}
-			
+				Chart chart = new Chart();
+				chart.setCheckInTimes(inTimes);
+				chart.setCheckOutTimes(outTimes);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		Chart chart = new Chart();
-		chart.setCheckInTimes(inTimes);
-		chart.setCheckOutTimes(outTimes);
-		return chart;
+		return null;
 	}
 	
 	// 統計摘要
@@ -224,8 +224,7 @@ public class ChartDaoImpl implements ChartDao {
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		return new Chart();
+		return null;
 	}
 	
 }

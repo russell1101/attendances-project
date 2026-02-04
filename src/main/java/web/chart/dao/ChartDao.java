@@ -1,6 +1,6 @@
 package web.chart.dao;
 
-import web.chart.bean.Chart;
+import web.chart.vo.Chart;
 
 public interface ChartDao {
 		// 查圓餅圖資料
