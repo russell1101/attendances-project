@@ -1,5 +1,10 @@
 package web.chart.dao;
 
+import java.util.List;
+import java.util.Map;
+
+import core.pojo.Department;
+import core.pojo.Employee;
 import web.chart.vo.Chart;
 
 public interface ChartDao {
@@ -17,4 +22,13 @@ public interface ChartDao {
 		
 		// 統計紀錄
 		Chart getSummaryData(String startDate, String endDate, Integer deptId);
+		
+		// 獲取部門清單
+	    List<Department> getDepartments();
+	    
+	    // 獲取員工清單
+	    List<Employee> getEmployees(Integer deptId);
+	    
+	    // 下載 CSV 
+	    List<Map<String, Object>> getAttendanceList(String startDate, String endDate, Integer deptId, Integer empId);
 }
