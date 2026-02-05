@@ -1,4 +1,4 @@
-package web.chart.bean;
+package web.chart.vo;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ public class Chart {
 	
 	// 散佈圖-打卡紀錄
 	private List<String> checkInTimes; //  上班打卡時間 
-  private List<String> checkOutTimes; // 下班打卡時間
+	private List<String> checkOutTimes; // 下班打卡時間
 	
 	private int totalLateCounts; // 總遲到人次
 	private double attendRate; // 出勤率
@@ -67,16 +67,16 @@ public class Chart {
 	public void setWorkingHours(List<Integer> workingHours) {
 		this.workingHours = workingHours;
 	}
-	public List<Double> getCheckInTimes() {
+	public List<String> getCheckInTimes() {
 		return checkInTimes;
 	}
-	public void setCheckInTimes(List<Double> checkInTimes) {
+	public void setCheckInTimes(List<String> checkInTimes) {
 		this.checkInTimes = checkInTimes;
 	}
-	public List<Double> getCheckOutTimes() {
+	public List<String> getCheckOutTimes() {
 		return checkOutTimes;
 	}
-	public void setCheckOutTimes(List<Double> checkOutTimes) {
+	public void setCheckOutTimes(List<String> checkOutTimes) {
 		this.checkOutTimes = checkOutTimes;
 	}
 	public int getTotalLateCounts() {
