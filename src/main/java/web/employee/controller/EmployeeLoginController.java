@@ -7,14 +7,17 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+
+import core.pojo.Employee;
 import web.employee.service.EmployeeService;
 import web.employee.service.impl.EmployeeServiceImpl;
-import web.employee.vo.Employee;
 
-@WebServlet("/front-login")
-public class LoginController extends HttpServlet {
+@WebServlet("/employee/login-front")
+public class EmployeeLoginController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private EmployeeService employeeService;
 
@@ -32,10 +35,6 @@ public class LoginController extends HttpServlet {
 		Gson gson = new Gson();
 		Employee employee = gson.fromJson(req.getReader(), Employee.class);
 		
-		// 檢查傳入資料
-		System.out.println(employee.getAccount());
-		System.out.println(employee.getPasswordHash());
-		
 		// service層執行後回應
 		Employee returnEmployee = employeeService.login(employee);
 		JsonObject respBody = new JsonObject();
@@ -50,11 +49,17 @@ public class LoginController extends HttpServlet {
 				// 變更Session ID
 				req.changeSessionId();
 			}
+			HttpSession session = req.getSession();
 			// 此屬性物件即⽤來區分是否登⼊中
-			req.getSession().setAttribute("employee", returnEmployee);
+			session.setAttribute("employee", returnEmployee);
+			// 取得欲前往的網址
+			String targetPath = (String) session.getAttribute("employeeTargetPath");
+			// 首頁
+			String location = "http://127.0.0.1:5500/rci-login-front.html";
 			// 建議前端跳轉到哪一頁
-			String location = "http://127.0.0.1:5500/rci-cart-back-company-policy.html";
-			respBody.addProperty("location", location);
+			targetPath = targetPath == null ? location : targetPath;
+			
+			respBody.addProperty("location", targetPath);
 		} else {
 			// 登⼊失敗回傳訊息
 			String errMsg = "使⽤者名稱或密碼錯誤";

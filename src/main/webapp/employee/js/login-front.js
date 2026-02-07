@@ -1,9 +1,9 @@
-let account = document.querySelector("#account");
+let email = document.querySelector("#email");
 let password = document.querySelector("#password");
 let btn_login = document.querySelector("button.btn-success");
 
 btn_login.addEventListener("click", function() {
-	if (!account.value) {
+	if (!email.value) {
 		alert("請輸入使用者名稱");
 		return;
 	};
@@ -12,10 +12,10 @@ btn_login.addEventListener("click", function() {
 		return;
 	};
 	let data = {
-		account: account.value,
+		email: email.value,
 		passwordHash: password.value
 	};
-	fetch("front-login", {
+	fetch("login-front", {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json'
