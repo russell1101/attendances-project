@@ -18,7 +18,8 @@ public class EmployeeLoginFilter extends HttpFilter {
 	protected void doFilter(HttpServletRequest req, HttpServletResponse res, FilterChain chain)
 			throws IOException, ServletException {
 		try {
-			if (req.getServletPath().startsWith("/employee/login-front.html")) {
+			String path = req.getServletPath();
+			if (path.contains("/employee/login-front") || path.endsWith(".js") || path.endsWith(".css")) {
 				chain.doFilter(req, res);
 			} else {
 				HttpSession session = req.getSession();
@@ -28,7 +29,7 @@ public class EmployeeLoginFilter extends HttpFilter {
 				} else {
 					String targetPath = req.getRequestURL().toString();
 					session.setAttribute("employeeTargetPath", targetPath);
-					res.sendRedirect("login-front.html");
+					req.getRequestDispatcher("login-front.html").forward(req, res);;
 				}
 			}
 		} catch (Exception e) {

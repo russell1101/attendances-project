@@ -19,7 +19,8 @@ public class AdminUserLoginFilter extends HttpFilter {
 			throws IOException, ServletException {
 		try {
 			String path = req.getServletPath();
-			if (path.endsWith("login-backend.html") || path.endsWith(".js")) { // 不用startsWith改用endsWith並排除js檔，避免遞迴發生
+			if (path.contains("/adminUser/login-backend") || path.endsWith(".js")
+					|| path.endsWith(".css")) { // 改用contains避免路徑出現異常排除登入頁面、js檔、css檔
 				chain.doFilter(req, res);
 			} else {
 				HttpSession session = req.getSession();
@@ -29,7 +30,7 @@ public class AdminUserLoginFilter extends HttpFilter {
 				} else {
 					String targetPath = req.getRequestURL().toString();
 					session.setAttribute("adminUserTargetPath", targetPath);
-					res.sendRedirect(req.getContextPath() + "/adminUser/login-backend.html"); // 路徑確保從應⽤系統環境根路徑開始
+					req.getRequestDispatcher("login-backend.html").forward(req, res); // 直接跳轉⾄登⼊⾴
 				}
 			}
 		} catch (Exception e) {

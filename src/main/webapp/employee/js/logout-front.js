@@ -1,4 +1,4 @@
-let logout_btn = document.querySelector("div#logout");
+let logout_btn = document.querySelector("button#logout");
 logout_btn.addEventListener("click", function() {
 	let result = confirm("是否登出");
 	if (result) {
