@@ -55,7 +55,7 @@ public class EmployeeLoginController extends HttpServlet {
 			// 取得欲前往的網址
 			String targetPath = (String) session.getAttribute("employeeTargetPath");
 			// 首頁
-			String location = "http://127.0.0.1:5500/rci-login-front.html";
+			String location = "employee-main-page.html";
 			// 建議前端跳轉到哪一頁
 			targetPath = targetPath == null ? location : targetPath;
 			
