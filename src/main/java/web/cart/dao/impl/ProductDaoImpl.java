@@ -20,6 +20,7 @@ public class ProductDaoImpl implements ProductDao {
 		ds = (DataSource) new InitialContext().lookup("java:comp/env/jdbc/attendances");
 	}
 
+	// 取得所有商品
 	@Override
 	public List<Product> getAllProducts() {
 		String sql = "SELECT * FROM products";
@@ -41,12 +42,12 @@ public class ProductDaoImpl implements ProductDao {
 				product.setRemovedAt(rs.getTimestamp("removed_at"));
 				product.setCreatedAt(rs.getTimestamp("created_at"));
 				product.setUpdatedAt(rs.getTimestamp("updated_at"));
-				
+
 				int days = rs.getInt("valid_days");
 				if (rs.wasNull()) {
-				    product.setValidDays(null);
+					product.setValidDays(null);
 				} else {
-				    product.setValidDays(days);
+					product.setValidDays(days);
 				}
 
 				productList.add(product);
@@ -56,6 +57,46 @@ public class ProductDaoImpl implements ProductDao {
 		}
 
 		return productList;
+	}
+
+	// 一般查詢商品
+	@Override
+	public Product selectById(Connection conn, Long productId) {
+		String sql = "SELECT * FROM products WHERE product_id = ?";
+		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+			pstmt.setLong(1, productId);
+			try (ResultSet rs = pstmt.executeQuery()) {
+				if (rs.next()) {
+					Product p = new Product();
+					p.setProductId(rs.getLong("product_id"));
+					p.setProductName(rs.getString("product_name"));
+					p.setStock(rs.getInt("stock"));
+					p.setRequiredPoints(rs.getBigDecimal("required_points"));
+					p.setValidDays(rs.getInt("valid_days")); // 取得有效天數
+					if (rs.wasNull())
+						p.setValidDays(null);
+					return p;
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	// 扣商品
+	@Override
+	public int deductStock(Connection conn, Long productId, int qty) {
+		String sql = "UPDATE products SET stock = stock - ? WHERE product_id = ? AND stock >= ?";
+		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+			pstmt.setInt(1, qty);
+			pstmt.setLong(2, productId);
+			pstmt.setInt(3, qty);
+			return pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
 	}
 
 }
