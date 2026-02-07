@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
+// 顯示員工的出勤紀錄列表
 @WebServlet("/attendance/list")
 public class AttendanceListServlet extends HttpServlet {
 
@@ -20,6 +21,9 @@ public class AttendanceListServlet extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		req.setCharacterEncoding("UTF-8");
+		resp.setContentType("text/html; charset=UTF-8");
+
 		HttpSession session = req.getSession(false);
 		Long empId = null;
 		if (session != null) {
@@ -31,6 +35,7 @@ public class AttendanceListServlet extends HttpServlet {
 			return;
 		}
 
+		// 用 service 拿出這個員工的所有打卡紀錄
 		List<AttendanceRecordVO> records = service.getRecordsByEmployeeId(empId);
 		req.setAttribute("records", records);
 

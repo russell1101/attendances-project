@@ -5,10 +5,8 @@ import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
 
-/**
- * 出勤紀錄 VO (Value Object)
- * 對應資料表 attendance_records
- */
+// 出勤紀錄的 bean
+// 對應資料庫的 attendance_records 表
 public class AttendanceRecordVO {
 
 	private Long attendanceId;
@@ -16,17 +14,15 @@ public class AttendanceRecordVO {
 	private Date workDate;
 	private Time clockInTime;
 	private Time clockOutTime;
-	private String clockInStatus; // ON_TIME, LATE, MISSING
-	private String clockOutStatus; // NORMAL, EARLY_LEAVE, MISSING
-	private BigDecimal pointsAwarded;
+	private String clockInStatus; // 上班狀態: ON_TIME, LATE, MISSING
+	private String clockOutStatus; // 下班狀態: NORMAL, EARLY_LEAVE, MISSING
+	private BigDecimal pointsAwarded; // 獎勵積分
 	private Timestamp createdAt;
 	private Timestamp updatedAt;
 
-	// 建構子
 	public AttendanceRecordVO() {
 	}
 
-	// Getters and Setters
 	public Long getAttendanceId() {
 		return attendanceId;
 	}
@@ -51,6 +47,7 @@ public class AttendanceRecordVO {
 		this.workDate = workDate;
 	}
 
+	// 上班時間
 	public Time getClockInTime() {
 		return clockInTime;
 	}
@@ -59,6 +56,7 @@ public class AttendanceRecordVO {
 		this.clockInTime = clockInTime;
 	}
 
+	// 下班時間
 	public Time getClockOutTime() {
 		return clockOutTime;
 	}

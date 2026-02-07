@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+// 刪除出勤紀錄
 @WebServlet("/attendance/delete")
 public class AttendanceDeleteServlet extends HttpServlet {
 
@@ -18,6 +19,9 @@ public class AttendanceDeleteServlet extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		req.setCharacterEncoding("UTF-8");
+		resp.setContentType("text/html; charset=UTF-8");
+
 		HttpSession session = req.getSession(false);
 		Long empId = null;
 		if (session != null) {
@@ -37,12 +41,13 @@ public class AttendanceDeleteServlet extends HttpServlet {
 				boolean ok = service.deleteRecord(id);
 
 				if (ok) {
+					System.out.println("刪除成功，ID=" + id); // 測試用
 					session.setAttribute("message", "刪除成功");
 				} else {
 					session.setAttribute("error", "刪除失敗");
 				}
 			} catch (NumberFormatException e) {
-				// ID格式錯誤
+				// ID 格式錯誤的話
 				session.setAttribute("error", "無效ID");
 				e.printStackTrace();
 			}

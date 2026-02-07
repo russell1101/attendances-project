@@ -4,41 +4,21 @@ import web.attendance.bean.AttendanceRecordVO;
 import java.sql.Date;
 import java.util.List;
 
-/**
- * ?ºå‹¤ç´€??DAO Interface
- */
+// DAO ä»‹é¢ï¼Œå®šç¾©å‡ºå‹¤ç´€éŒ„çš„è³‡æ–™åº«æ“ä½œ
 public interface AttendanceDAO {
 
-    /**
-     * ?°å??ºå‹¤ç´€?„ï?ä¸Šç­?“å¡ï¼?     * 
-     * @param record ?ºå‹¤ç´€?„ç‰©ä»?     * @return ?°å??å??å‚³ true
-     */
-    boolean insert(AttendanceRecordVO record);
+	// æ–°å¢æ‰“å¡ç´€éŒ„ï¼ˆä¸Šç­ï¼‰
+	boolean insert(AttendanceRecordVO record);
 
-    /**
-     * ?´æ–°?ºå‹¤ç´€?„ï?ä¸‹ç­?“å¡ï¼?     * 
-     * @param record ?ºå‹¤ç´€?„ç‰©ä»?     * @return ?´æ–°?å??å‚³ true
-     */
-    boolean update(AttendanceRecordVO record);
+	// æ›´æ–°æ‰“å¡ç´€éŒ„ï¼ˆä¸‹ç­ï¼‰
+	boolean update(AttendanceRecordVO record);
 
-    /**
-     * ?¹æ??¡å·¥ID?Œæ—¥?ŸæŸ¥è©¢å‡º?¤ç???     * 
-     * @param employeeId ?¡å·¥ID
-     * @param workDate   å·¥ä??¥æ?
-     * @return ?ºå‹¤ç´€?„ç‰©ä»¶ï??¥ç„¡?‡å???null
-     */
-    AttendanceRecordVO findByEmployeeIdAndDate(Long employeeId, Date workDate);
+	// æ ¹æ“šå“¡å·¥IDå’Œæ—¥æœŸæŸ¥è©¢ç•¶å¤©çš„å‡ºå‹¤
+	AttendanceRecordVO findByEmployeeIdAndDate(Long employeeId, Date workDate);
 
-    /**
-     * ?¥è©¢?¡å·¥?„æ??‰å‡º?¤ç???     * 
-     * @param employeeId ?¡å·¥ID
-     * @return ?ºå‹¤ç´€?„å?è¡?     */
-    List<AttendanceRecordVO> findByEmployeeId(Long employeeId);
+	// æŸ¥è©¢æŸå€‹å“¡å·¥çš„æ‰€æœ‰å‡ºå‹¤ç´€éŒ„
+	List<AttendanceRecordVO> findByEmployeeId(Long employeeId);
 
-    /**
-     * ?ªé™¤?ºå‹¤ç´€??     * 
-     * @param attendanceId ?ºå‹¤ç´€?„ID
-     * @return ?ªé™¤?å??å‚³ true
-     */
-    boolean deleteById(Long attendanceId);
+	// åˆªé™¤å‡ºå‹¤ç´€éŒ„
+	boolean deleteById(Long attendanceId);
 }

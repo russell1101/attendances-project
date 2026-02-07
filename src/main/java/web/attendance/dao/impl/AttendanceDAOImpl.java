@@ -1,4 +1,4 @@
-﻿package web.attendance.dao.impl;
+package web.attendance.dao.impl;
 
 import core.util.DBConnection;
 import web.attendance.bean.AttendanceRecordVO;
@@ -13,7 +13,7 @@ public class AttendanceDAOImpl implements AttendanceDAO {
 	@Override
 	public boolean insert(AttendanceRecordVO record) {
 		String sql = "INSERT INTO attendance_records (employee_id, work_date, clock_in_time, clock_in_status, points_awarded) VALUES (?, ?, ?, ?, ?)";
-
+		
 		try (Connection conn = DBConnection.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
@@ -24,7 +24,7 @@ public class AttendanceDAOImpl implements AttendanceDAO {
 			pstmt.setBigDecimal(5, record.getPointsAwarded());
 
 			int rows = pstmt.executeUpdate();
-
+			
 			if (rows > 0) {
 				ResultSet rs = pstmt.getGeneratedKeys();
 				if (rs.next()) {
@@ -37,14 +37,13 @@ public class AttendanceDAOImpl implements AttendanceDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
+		
 		return false;
 	}
 
 	@Override
 	public boolean update(AttendanceRecordVO record) {
-		String sql = "UPDATE attendance_records SET clock_out_time = ?, clock_out_status = ?, points_awarded = ? " +
-				"WHERE attendance_id = ?";
+		String sql = "UPDATE attendance_records SET clock_out_time = ?, clock_out_status = ?, points_awarded = ? WHERE attendance_id = ?";
 
 		try (Connection conn = DBConnection.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -55,14 +54,14 @@ public class AttendanceDAOImpl implements AttendanceDAO {
 			pstmt.setLong(4, record.getAttendanceId());
 
 			int affectedRows = pstmt.executeUpdate();
-
+			
 			if (affectedRows > 0) {
-				System.out.println("[AttendanceDAO] 下班打卡成功 - Attendance ID: " + record.getAttendanceId());
+				System.out.println("[DAO] 下班打卡成功 - ID: " + record.getAttendanceId());
 				return true;
 			}
 
 		} catch (SQLException e) {
-			System.err.println("[AttendanceDAO] 下班打卡失敗: " + e.getMessage());
+			System.err.println("[DAO] 更新失敗: " + e.getMessage());
 			e.printStackTrace();
 		}
 
@@ -86,10 +85,10 @@ public class AttendanceDAOImpl implements AttendanceDAO {
 			}
 
 		} catch (SQLException e) {
-			System.err.println("[AttendanceDAO] 查詢出勤紀錄失敗: " + e.getMessage());
+			System.err.println("[DAO] 查詢出勤紀錄失敗: " + e.getMessage());
 			e.printStackTrace();
 		}
-
+		
 		return null;
 	}
 
@@ -97,7 +96,7 @@ public class AttendanceDAOImpl implements AttendanceDAO {
 	public List<AttendanceRecordVO> findByEmployeeId(Long employeeId) {
 		List<AttendanceRecordVO> records = new ArrayList<>();
 		String sql = "SELECT * FROM attendance_records WHERE employee_id = ? ORDER BY work_date DESC";
-
+		
 		try (Connection conn = DBConnection.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
@@ -110,7 +109,7 @@ public class AttendanceDAOImpl implements AttendanceDAO {
 			}
 
 		} catch (SQLException e) {
-			System.err.println("[AttendanceDAO] 查詢員工出勤紀錄失敗: " + e.getMessage());
+			System.err.println("[DAO] 查詢員工出勤紀錄失敗: " + e.getMessage());
 			e.printStackTrace();
 		}
 
@@ -125,23 +124,23 @@ public class AttendanceDAOImpl implements AttendanceDAO {
 				PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
 			pstmt.setLong(1, attendanceId);
-
+			
 			int affectedRows = pstmt.executeUpdate();
 
 			if (affectedRows > 0) {
-				System.out.println("[AttendanceDAO] 刪除出勤紀錄成功 - Attendance ID: " + attendanceId);
+				System.out.println("[DAO] 刪除成功 - ID: " + attendanceId);
 				return true;
 			}
 
 		} catch (SQLException e) {
-			System.err.println("[AttendanceDAO] 刪除出勤紀錄失敗: " + e.getMessage());
+			System.err.println("[DAO] 刪除失敗: " + e.getMessage());
 			e.printStackTrace();
 		}
 
 		return false;
 	}
 
-	// 將 ResultSet 轉換為 VO 物件
+	// 把 ResultSet 轉成 VO 物件
 	private AttendanceRecordVO mapResultSetToVO(ResultSet rs) throws SQLException {
 		AttendanceRecordVO record = new AttendanceRecordVO();
 		record.setAttendanceId(rs.getLong("attendance_id"));
