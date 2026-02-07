@@ -1,9 +1,9 @@
 package web.employee.dao;
 
-import web.employee.vo.Employee;
+import core.pojo.Employee;
 
 public interface EmployeeDao {
 	
-	Employee selectByAccount(String account);
+	Employee selectByEmail(String email);
 	
 }

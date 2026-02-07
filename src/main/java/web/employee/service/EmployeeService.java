@@ -1,6 +1,6 @@
 package web.employee.service;
 
-import web.employee.vo.Employee;
+import core.pojo.Employee;
 
 public interface EmployeeService {
 	

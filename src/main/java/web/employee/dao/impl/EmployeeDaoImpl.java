@@ -3,39 +3,34 @@ package web.employee.dao.impl;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.sql.DataSource;
+import core.pojo.Employee;
+import core.util.DBConnection;
 import web.employee.dao.EmployeeDao;
-import web.employee.vo.Employee;
+
 
 public class EmployeeDaoImpl implements EmployeeDao{
-	private DataSource ds;
-
-	public EmployeeDaoImpl() throws NamingException {
-		ds = (DataSource) new InitialContext().lookup("java:comp/env/jdbc/project_db");
-	}
 
 	@Override
-	public Employee selectByAccount(String account) {
-		String sql = "select * from employee where account = ?";
-		try (Connection conn = ds.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql);) {
-			pstmt.setString(1, account);
+	public Employee selectByEmail(String email) {
+		String sql = "select * from employees where email = ?";
+		try (Connection conn = DBConnection.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql);) {
+			pstmt.setString(1, email);
 			try (ResultSet rs = pstmt.executeQuery()) {
 				if (rs.next()) {
-					Employee employee = new Employee();
-					employee.setEmployeeId(rs.getInt("employee_id"));
-					employee.setName(rs.getString("name"));
-					employee.setAccount(rs.getString("account"));
-					employee.setPasswordHash(rs.getString("password_hash"));
-					employee.setHireDate(rs.getDate("hire_date"));
-					employee.setCurrentPoints(rs.getInt("current_points"));
-					employee.setDepartmentId(rs.getInt("department_id"));
-					employee.setEmployeeStatusId(rs.getInt("employee_status_id"));
-					employee.setIsActive(rs.getBoolean("is_active"));
-					employee.setCreatedAt(rs.getTimestamp("created_at"));
-					employee.setUpdatedAt(rs.getTimestamp("updated_at"));
-					return employee;
+					Employee emp = new Employee();
+					emp.setEmployeeId(rs.getLong("employee_id"));
+					emp.setName(rs.getString("name"));
+					emp.setEmail(rs.getString("email"));
+					emp.setPasswordHash(rs.getString("password_hash"));
+					emp.setGoogleSub(rs.getString("google_sub"));
+					emp.setHireDate(rs.getDate("hire_date"));
+					emp.setCurrentPoints(rs.getBigDecimal("current_points"));
+					emp.setDepartmentId(rs.getLong("department_id"));
+					emp.setEmployeeStatusId(rs.getLong("employee_status_id"));
+					emp.setIsActive(rs.getBoolean("is_active"));
+					emp.setCreatedAt(rs.getTimestamp("created_at"));
+					emp.setUpdatedAt(rs.getTimestamp("updated_at"));
+					return emp;
 				}
 			}
 		} catch (Exception e) {
