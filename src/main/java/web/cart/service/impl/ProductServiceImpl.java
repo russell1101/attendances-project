@@ -41,8 +41,9 @@ public class ProductServiceImpl implements ProductService {
 			conn.setAutoCommit(false);
 
 			try {
-				if (qty <= 0)
+				if (qty <= 0) {
 					throw new Exception("購買數量必須大於 0");
+				}
 
 				Product product = productDao.selectById(conn, prodId);
 				if (product == null)
