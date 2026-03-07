@@ -3,7 +3,7 @@ package web.cart.service;
 import java.util.List;
 
 import core.pojo.Product;
-import web.cart.bean.BuyResult;
+import web.cart.dto.BuyResult;
 
 public interface ProductService {
 	List<Product> getAllProducts();
