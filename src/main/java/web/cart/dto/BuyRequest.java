@@ -1,4 +1,4 @@
-package web.cart.bean;
+package web.cart.dto;
 
 //購買請求物件
 public class BuyRequest {

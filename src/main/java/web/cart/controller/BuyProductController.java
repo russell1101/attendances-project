@@ -12,8 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 
 import core.util.ProductApiResponse;
-import web.cart.bean.BuyRequest;
-import web.cart.bean.BuyResult;
+import web.cart.dto.BuyRequest;
+import web.cart.dto.BuyResult;
 import web.cart.service.ProductService;
 import web.cart.service.impl.ProductServiceImpl;
 
