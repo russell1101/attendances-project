@@ -12,34 +12,30 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 
-import core.pojo.Employee;
+import core.entity.Employee;
 import web.chart.service.ChartService;
 import web.chart.service.impl.ChartServiceImpl;
 
 @WebServlet("/getEmps")
 public class GetEmpController extends HttpServlet {
-    private static final long serialVersionUID = 1L;
-    private ChartService service;
+	private static final long serialVersionUID = 1L;
+	private ChartService service;
 
-    @Override
-    public void init() throws ServletException {
-        try {
-            service = new ChartServiceImpl();
-        } catch (NamingException e) {
-            e.printStackTrace();
-        }
-    }
+	@Override
+	public void init() throws ServletException {
+		service = new ChartServiceImpl();
+	}
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-    		
-    		Gson gson = new Gson();
-        String deptIdStr = req.getParameter("deptId");
-        Integer deptId = (deptIdStr != null && !deptIdStr.isEmpty()) ? Integer.parseInt(deptIdStr) : null;
-        
-        List<Employee> emps = service.getEmpOptions(deptId);
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        resp.setContentType("application/json;charset=UTF-8");
-        resp.getWriter().write(gson.toJson(emps));
-    }
+		Gson gson = new Gson();
+		String deptIdStr = req.getParameter("deptId");
+		Integer deptId = (deptIdStr != null && !deptIdStr.isEmpty()) ? Integer.parseInt(deptIdStr) : null;
+
+		List<Employee> emps = service.getEmpOptions(deptId);
+
+		resp.setContentType("application/json;charset=UTF-8");
+		resp.getWriter().write(gson.toJson(emps));
+	}
 }

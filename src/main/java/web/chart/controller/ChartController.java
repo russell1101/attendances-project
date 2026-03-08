@@ -17,32 +17,28 @@ import web.chart.vo.Chart;
 
 @WebServlet("/chart")
 public class ChartController extends HttpServlet {
-    private static final long serialVersionUID = 1L;
-    private ChartService service;
+	private static final long serialVersionUID = 1L;
+	private ChartService service;
 
-    @Override
-    public void init() throws ServletException {
-        try {
-            service = new ChartServiceImpl();
-        } catch (NamingException e) {
-            e.printStackTrace();
-        }
-    }
+	@Override
+	public void init() throws ServletException {
+		service = new ChartServiceImpl();
+	}
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-       
-    		Gson gson = new Gson();
-        String startDate = req.getParameter("startDate");
-        String endDate = req.getParameter("endDate");
-        String empIdStr = req.getParameter("empId");
-        String deptIdStr = req.getParameter("deptId");
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        Integer empId = (empIdStr != null && !empIdStr.isEmpty()) ? Integer.parseInt(empIdStr) : null;
-        Integer deptId = (deptIdStr != null && !deptIdStr.isEmpty()) ? Integer.parseInt(deptIdStr) : null;
+		Gson gson = new Gson();
+		String startDate = req.getParameter("startDate");
+		String endDate = req.getParameter("endDate");
+		String empIdStr = req.getParameter("empId");
+		String deptIdStr = req.getParameter("deptId");
 
-        Chart chart = service.getChartAllData(startDate, endDate, deptId, empId);
-        resp.setContentType("application/json;charset=UTF-8");
-        resp.getWriter().write(gson.toJson(chart));
-    }
+		Integer empId = (empIdStr != null && !empIdStr.isEmpty()) ? Integer.parseInt(empIdStr) : null;
+		Integer deptId = (deptIdStr != null && !deptIdStr.isEmpty()) ? Integer.parseInt(deptIdStr) : null;
+
+		Chart chart = service.getChartAllData(startDate, endDate, deptId, empId);
+		resp.setContentType("application/json;charset=UTF-8");
+		resp.getWriter().write(gson.toJson(chart));
+	}
 }
