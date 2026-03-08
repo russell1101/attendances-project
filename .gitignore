@@ -9,6 +9,8 @@ target/
 .metadata/
 bin/
 
+.factorypath
+
 # --- IntelliJ IDEA ---
 .idea/
 *.iml
