@@ -1,4 +1,4 @@
-package web.cart.bean;
+package web.cart.dto;
 
 import java.math.BigDecimal;
 

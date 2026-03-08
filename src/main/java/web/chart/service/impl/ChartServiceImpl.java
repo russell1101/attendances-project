@@ -55,7 +55,7 @@ public class ChartServiceImpl implements ChartService {
 			}
 		}
 
-		// 4. 統計數字看板 (總遲到次數、出席率、未打卡人數)
+		// 統計數字看板 (總遲到次數、出席率、未打卡人數)
 		Chart summary = dao.getSummaryData(startDate, endDate, deptId);
 		if (summary != null) {
 			chart.setTotalLateCounts(summary.getTotalLateCounts());

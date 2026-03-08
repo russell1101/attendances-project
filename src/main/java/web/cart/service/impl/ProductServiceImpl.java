@@ -9,11 +9,11 @@ import javax.naming.NamingException;
 import core.pojo.Employee;
 import core.pojo.Product;
 import core.util.DBConnection;
-import web.cart.bean.BuyResult;
 import web.cart.dao.EmployeeDao;
 import web.cart.dao.ProductDao;
 import web.cart.dao.impl.EmployeeDaoImpl;
 import web.cart.dao.impl.ProductDaoImpl;
+import web.cart.dto.BuyResult;
 import web.cart.service.ProductService;
 
 public class ProductServiceImpl implements ProductService {
@@ -41,8 +41,9 @@ public class ProductServiceImpl implements ProductService {
 			conn.setAutoCommit(false);
 
 			try {
-				if (qty <= 0)
+				if (qty <= 0) {
 					throw new Exception("購買數量必須大於 0");
+				}
 
 				Product product = productDao.selectById(conn, prodId);
 				if (product == null)
