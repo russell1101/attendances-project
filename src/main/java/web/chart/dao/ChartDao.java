@@ -5,12 +5,11 @@ import java.util.Map;
 
 import org.hibernate.Session;
 
-import core.dao.CoreDao;
 import core.entity.Department;
 import core.entity.Employee;
 import web.chart.vo.Chart;
 
-public interface ChartDao extends CoreDao {
+public interface ChartDao {
 
 	// 查圓餅圖資料
 	Chart getPie(String startDate, String endDate, Integer deptId);
@@ -35,6 +34,5 @@ public interface ChartDao extends CoreDao {
 
 	// 下載 CSV
 	List<Map<String, Object>> getAttendanceList(String startDate, String endDate, Integer deptId, Integer empId);
-	
-	void setSession(Session session);
+
 }

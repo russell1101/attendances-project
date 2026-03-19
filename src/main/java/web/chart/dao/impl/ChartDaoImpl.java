@@ -6,22 +6,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.PersistenceContext;
+
 import org.hibernate.Session;
 import org.hibernate.query.Query;
+import org.springframework.stereotype.Repository;
 
 import core.entity.Department;
 import core.entity.Employee;
 import web.chart.dao.ChartDao;
 import web.chart.vo.Chart;
 
+@Repository
 public class ChartDaoImpl implements ChartDao {
-	
+	@PersistenceContext
     private Session session;
-
-    @Override
-    public void setSession(Session session) {
-        this.session = session;
-    }
 
 	// 部門資訊
     @Override
@@ -59,7 +58,7 @@ public class ChartDaoImpl implements ChartDao {
 				hql.append("AND ar.employee.department.departmentId = :deptId ");
 			}
 
-			Query<Object[]> query = getSession().createQuery(hql.toString(), Object[].class);
+			Query<Object[]> query = session.createQuery(hql.toString(), Object[].class);
 			query.setParameter("startDate", Date.valueOf(startDate));
 			query.setParameter("endDate", Date.valueOf(endDate));
 
@@ -84,7 +83,7 @@ public class ChartDaoImpl implements ChartDao {
 					+ "WHERE ar.clockInStatus = 'LATE' " + "AND ar.workDate BETWEEN :startDate AND :endDate "
 					+ "GROUP BY ar.employee.department.departmentName " + "ORDER BY COUNT(ar) ASC";
 
-			Query<Object[]> query = getSession().createQuery(hql.toString(), Object[].class);
+			Query<Object[]> query = session.createQuery(hql.toString(), Object[].class);
 			query.setParameter("startDate", Date.valueOf(startDate));
 			query.setParameter("endDate", Date.valueOf(endDate));
 
@@ -117,7 +116,7 @@ public class ChartDaoImpl implements ChartDao {
 					+ "AND clock_out_time IS NOT NULL " 
 					+ "ORDER BY work_date";
 
-			List<Object[]> results = getSession().createNativeQuery(sql)
+			List<Object[]> results = session.createNativeQuery(sql)
 					.setParameter("empId", empId)
 					.setParameter("startDate", startDate)
 					.setParameter("endDate", endDate).getResultList();
@@ -144,7 +143,7 @@ public class ChartDaoImpl implements ChartDao {
 					+ "WHERE ar.employee.employeeId = :empId " + "AND ar.workDate BETWEEN :startDate AND :endDate "
 					+ "ORDER BY ar.workDate";
 
-			Query<Object[]> query = getSession().createQuery(hql, Object[].class);
+			Query<Object[]> query = session.createQuery(hql, Object[].class);
 			query.setParameter("empId", empId);
 			query.setParameter("startDate", Date.valueOf(startDate));
 			query.setParameter("endDate", Date.valueOf(endDate));
@@ -184,7 +183,7 @@ public class ChartDaoImpl implements ChartDao {
 				hql.append("AND ar.employee.department.departmentId = :deptId ");
 			}
 
-			Query<Object[]> query = getSession().createQuery(hql.toString(), Object[].class);
+			Query<Object[]> query = session.createQuery(hql.toString(), Object[].class);
 			query.setParameter("startDate", Date.valueOf(startDate));
 			query.setParameter("endDate", Date.valueOf(endDate));
 
@@ -229,7 +228,7 @@ public class ChartDaoImpl implements ChartDao {
 			}
 			hql.append("ORDER BY ar.workDate DESC");
 
-			Query<Object[]> query = getSession().createQuery(hql.toString(), Object[].class);
+			Query<Object[]> query = session.createQuery(hql.toString(), Object[].class);
 			query.setParameter("startDate", Date.valueOf(startDate));
 			query.setParameter("endDate", Date.valueOf(endDate));
 

@@ -4,10 +4,9 @@ import java.util.List;
 
 import core.entity.Department;
 import core.entity.Employee;
-import core.service.CoreService;
 import web.chart.vo.Chart;
 
-public interface ChartService extends CoreService {
+public interface ChartService {
     // 圖表資料
 	Chart getChartAllData(String startDate, String endDate, Integer deptId, Integer empId);
     
