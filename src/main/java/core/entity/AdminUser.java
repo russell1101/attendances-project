@@ -1,8 +1,6 @@
 package core.entity;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.sql.Time;
 import java.sql.Timestamp;
 
 import javax.persistence.Column;
@@ -13,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,35 +19,34 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "departments")
+@Table(name = "admin_users")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Department implements Serializable {
+public class AdminUser implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "department_id")
-	private Long departmentId;
+	@Column(name = "admin_user_id")
+	private Long adminUserId;
 
-	@Column(name = "department_name", unique = true, nullable = false)
-	private String departmentName;
+	@Column(name = "username", unique = true, nullable = false)
+	private String username;
 
-	@JsonFormat(pattern = "HH:mm:ss", timezone = "GMT+8")
-	@Column(name = "work_start_time", nullable = false)
-	private Time workStartTime;
+	@Column(name = "password_hash", nullable = false)
+	@JsonIgnore 
+	private String passwordHash;
 
-	@JsonFormat(pattern = "HH:mm:ss", timezone = "GMT+8")
-	@Column(name = "work_end_time", nullable = false)
-	private Time workEndTime;
+	@Column(name = "display_name", nullable = false)
+	private String displayName;
 
-	@Column(name = "on_time_bonus_points", nullable = false)
-	private BigDecimal onTimeBonusPoints;
+	@Column(name = "employee_id")
+	private Long employeeId;
 
-	@Column(name = "late_penalty_points", nullable = false)
-	private BigDecimal latePenaltyPoints;
+	@Column(name = "is_active", nullable = false)
+	private Boolean isActive;
 
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	@Column(name = "created_at", insertable = false, updatable = false)
@@ -57,5 +55,4 @@ public class Department implements Serializable {
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	@Column(name = "updated_at", insertable = false, updatable = false)
 	private Timestamp updatedAt;
-
 }

@@ -17,7 +17,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import core.pojo.Product;
-import core.util.ProductApiResponse;
+import core.util.ApiResponse;
 import web.cart.service.ProductService;
 import web.cart.service.impl.ProductServiceImpl;
 
@@ -43,7 +43,7 @@ public class GetAllProductController extends HttpServlet {
 		PrintWriter out = resp.getWriter();
 		Gson gson = new Gson();
 
-		ProductApiResponse<List<JsonObject>> apiResponse = new ProductApiResponse<>();
+		ApiResponse<List<JsonObject>> apiResponse = new ApiResponse<>();
 
 		try {
 			List<Product> productList = productService.getAllProducts();

@@ -13,8 +13,20 @@ import javax.persistence.Lob;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Entity
 @Table(name = "products")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Product implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -23,138 +35,43 @@ public class Product implements Serializable {
 	@Column(name = "product_id")
 	private Long productId;
 
-	@Column(name = "product_name")
+	@Column(name = "product_name", nullable = false)
 	private String productName;
 
-	@Column(name = "description")
+	@Column(name = "description", columnDefinition = "TEXT")
 	private String description;
 
-	@Column(name = "stock")
+	@Column(name = "stock", nullable = false)
 	private Integer stock;
 
-	@Column(name = "required_points")
+	@Column(name = "required_points", nullable = false)
 	private BigDecimal requiredPoints;
 
 	@Version
-	@Column(name = "version")
+	@Column(name = "version", nullable = false)
 	private Integer version;
 
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	@Column(name = "released_at", insertable = false)
 	private Timestamp releasedAt;
 
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	@Column(name = "removed_at")
 	private Timestamp removedAt;
 
 	@Lob
 	@Column(name = "image_data")
+	@JsonIgnore 
 	private byte[] imageData;
 
 	@Column(name = "valid_days")
 	private Integer validDays;
 
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	@Column(name = "created_at", insertable = false, updatable = false)
 	private Timestamp createdAt;
 
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	@Column(name = "updated_at", insertable = false, updatable = false)
 	private Timestamp updatedAt;
-
-	public Long getProductId() {
-		return productId;
-	}
-
-	public void setProductId(Long productId) {
-		this.productId = productId;
-	}
-
-	public String getProductName() {
-		return productName;
-	}
-
-	public void setProductName(String productName) {
-		this.productName = productName;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public Integer getStock() {
-		return stock;
-	}
-
-	public void setStock(Integer stock) {
-		this.stock = stock;
-	}
-
-	public BigDecimal getRequiredPoints() {
-		return requiredPoints;
-	}
-
-	public void setRequiredPoints(BigDecimal requiredPoints) {
-		this.requiredPoints = requiredPoints;
-	}
-
-	public Integer getVersion() {
-		return version;
-	}
-
-	public void setVersion(Integer version) {
-		this.version = version;
-	}
-
-	public Timestamp getReleasedAt() {
-		return releasedAt;
-	}
-
-	public void setReleasedAt(Timestamp releasedAt) {
-		this.releasedAt = releasedAt;
-	}
-
-	public Timestamp getRemovedAt() {
-		return removedAt;
-	}
-
-	public void setRemovedAt(Timestamp removedAt) {
-		this.removedAt = removedAt;
-	}
-
-	public byte[] getImageData() {
-		return imageData;
-	}
-
-	public void setImageData(byte[] imageData) {
-		this.imageData = imageData;
-	}
-
-	public Integer getValidDays() {
-		return validDays;
-	}
-
-	public void setValidDays(Integer validDays) {
-		this.validDays = validDays;
-	}
-
-	public Timestamp getCreatedAt() {
-		return createdAt;
-	}
-
-	public void setCreatedAt(Timestamp createdAt) {
-		this.createdAt = createdAt;
-	}
-
-	public Timestamp getUpdatedAt() {
-		return updatedAt;
-	}
-
-	public void setUpdatedAt(Timestamp updatedAt) {
-		this.updatedAt = updatedAt;
-	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
 }

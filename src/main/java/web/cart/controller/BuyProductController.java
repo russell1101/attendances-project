@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 
-import core.util.ProductApiResponse;
+import core.util.ApiResponse;
 import web.cart.dto.BuyRequest;
 import web.cart.dto.BuyResult;
 import web.cart.service.ProductService;
@@ -39,7 +39,7 @@ public class BuyProductController extends HttpServlet {
 		PrintWriter out = resp.getWriter();
 		Gson gson = new Gson();
 
-		ProductApiResponse<BuyResult> apiResponse = new ProductApiResponse<>();
+		ApiResponse<BuyResult> apiResponse = new ApiResponse<>();
 
 		try {
 			BuyRequest reqData = gson.fromJson(req.getReader(), BuyRequest.class);
@@ -83,7 +83,7 @@ public class BuyProductController extends HttpServlet {
 	}
 	
 	// 固定打錯誤方法
-	private void outputError(PrintWriter out, Gson gson, ProductApiResponse<BuyResult> apiResponse, String msg) {
+	private void outputError(PrintWriter out, Gson gson, ApiResponse<BuyResult> apiResponse, String msg) {
 		apiResponse.setSuccess(0);
 		apiResponse.setErrMsg(msg);
 		apiResponse.setData(null);
