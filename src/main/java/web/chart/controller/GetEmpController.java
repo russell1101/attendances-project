@@ -1,41 +1,26 @@
 package web.chart.controller;
 
-import java.io.IOException;
 import java.util.List;
 
-import javax.naming.NamingException;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import com.google.gson.Gson;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import core.entity.Employee;
 import web.chart.service.ChartService;
-import web.chart.service.impl.ChartServiceImpl;
 
-@WebServlet("/getEmps")
-public class GetEmpController extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+@Controller
+@RequestMapping("admin/chart")
+public class GetEmpController {
+	@Autowired
 	private ChartService service;
-
-	@Override
-	public void init() throws ServletException {
-		service = new ChartServiceImpl();
-	}
-
-	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-		Gson gson = new Gson();
-		String deptIdStr = req.getParameter("deptId");
-		Integer deptId = (deptIdStr != null && !deptIdStr.isEmpty()) ? Integer.parseInt(deptIdStr) : null;
-
-		List<Employee> emps = service.getEmpOptions(deptId);
-
-		resp.setContentType("application/json;charset=UTF-8");
-		resp.getWriter().write(gson.toJson(emps));
+	
+	@GetMapping("/getEmps")
+	@ResponseBody
+	public List<Employee> getEmps(@RequestParam(required = false) Integer deptId){
+		return service.getEmpOptions(deptId);
 	}
 }
