@@ -13,10 +13,10 @@ public class GlobalExceptionHandler {
 	
 	@ExceptionHandler(BusinessException.class)
 	public ApiResponse<Void> handleBusinessException(BusinessException e) {
-		logger.warn("業務邏輯阻擋: {}", e.getMessage());
+		logger.warn("業務邏輯阻擋: [Code: {}] {}", e.getCode(), e.getMessage());
 
-		// 把組員寫的錯誤訊息，包裝進 ApiResponse 退回給前端
-		return ApiResponse.error(e.getMessage());
+		// 把寫的錯誤訊息，包裝進 ApiResponse 退回給前端
+		return new ApiResponse<>(e.getCode(), e.getMessage(), null);
 	}
 
 	// 處理系統預期外的嚴重錯誤
