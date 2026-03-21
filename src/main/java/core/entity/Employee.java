@@ -3,15 +3,14 @@ package core.entity;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 import javax.persistence.Table;
-import javax.persistence.Version;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -22,50 +21,47 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "products")
+@Table(name = "employees")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Product implements Serializable {
+public class Employee implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "product_id")
-	private Long productId;
+	@Column(name = "employee_id")
+	private Long employeeId;
 
-	@Column(name = "product_name", nullable = false)
-	private String productName;
+	@Column(name = "name", nullable = false)
+	private String name;
 
-	@Column(name = "description", columnDefinition = "TEXT")
-	private String description;
+	@Column(name = "email", nullable = false, unique = true)
+	private String email;
 
-	@Column(name = "stock", nullable = false)
-	private Integer stock;
-
-	@Column(name = "required_points", nullable = false)
-	private BigDecimal requiredPoints;
-
-	@Version
-	@Column(name = "version", nullable = false)
-	private Integer version;
-
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-	@Column(name = "released_at", insertable = false)
-	private Timestamp releasedAt;
-
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-	@Column(name = "removed_at")
-	private Timestamp removedAt;
-
-	@Lob
-	@Column(name = "image_data")
+	@Column(name = "password_hash")
 	@JsonIgnore 
-	private byte[] imageData;
+	private String passwordHash;
 
-	@Column(name = "valid_days")
-	private Integer validDays;
+	@Column(name = "google_sub", unique = true)
+	private String googleSub;
+
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+	@Column(name = "hire_date", nullable = false)
+	private Date hireDate;
+
+	@Column(name = "current_points", nullable = false)
+	private BigDecimal currentPoints;
+
+	@Column(name = "department_id", nullable = false)
+	private Long departmentId;
+
+	@Column(name = "employee_status_id", nullable = false)
+	private Long employeeStatusId;
+
+	@Column(name = "is_active", nullable = false)
+	private Boolean isActive;
 
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	@Column(name = "created_at", insertable = false, updatable = false)

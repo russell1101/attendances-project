@@ -14,7 +14,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 
 import core.pojo.Employee;
-import core.util.ProductApiResponse;
+import core.util.ApiResponse;
 import web.cart.service.EmployeeService;
 import web.cart.service.impl.EmployeeServiceImpl;
 
@@ -39,7 +39,7 @@ public class GetEmployeeController extends HttpServlet {
 		PrintWriter out = resp.getWriter();
 		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
 
-		ProductApiResponse<Employee> apiResponse = new ProductApiResponse<>();
+		ApiResponse<Employee> apiResponse = new ApiResponse<>();
 
 		try {
 			JsonObject jsonObject = gson.fromJson(req.getReader(), JsonObject.class);
