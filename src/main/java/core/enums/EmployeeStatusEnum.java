@@ -18,4 +18,13 @@ public enum EmployeeStatusEnum {
 	public String getDescription() {
 		return description;
 	}
+
+	public static EmployeeStatusEnum fromId(Long id) {
+		for (EmployeeStatusEnum status : EmployeeStatusEnum.values()) {
+			if (status.getId().equals(id)) {
+				return status;
+			}
+		}
+		return null;
+	}
 }
