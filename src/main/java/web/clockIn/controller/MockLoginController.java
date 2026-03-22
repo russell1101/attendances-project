@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import core.entity.Employee;
 import core.util.ApiResponse;
-import web.clockIn.dao.EmployeeDao;
+import web.clockIn.dao.ClockEmployeeDao;
 
 @RestController
 @RequestMapping("/frontUser")
 public class MockLoginController {
 
 	@Autowired
-	private EmployeeDao employeeDao;
+	private ClockEmployeeDao employeeDao;
 
 	/**
 	 * 開發環境專用：模擬登入 API 用法： GET /frontUser/mock-login/1 (數字代表要登入的員工 ID)

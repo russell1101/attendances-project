@@ -11,4 +11,6 @@ public interface AttendanceDao {
 
 	void savePointTransaction(PointTransaction transaction);
 
+	AttendanceRecord findTodayRecord(Long employeeId, java.sql.Date today);
+
 }

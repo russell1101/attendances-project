@@ -6,10 +6,10 @@ import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
 import core.entity.Employee;
-import web.clockIn.dao.EmployeeDao;
+import web.clockIn.dao.ClockEmployeeDao;
 
 @Repository
-public class EmployeeDaoImpl implements EmployeeDao {
+public class ClockEmployeeDaoImpl implements ClockEmployeeDao {
 
 	@PersistenceContext
 	private Session session;

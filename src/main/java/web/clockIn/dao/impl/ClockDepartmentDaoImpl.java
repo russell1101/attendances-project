@@ -6,10 +6,10 @@ import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
 import core.entity.Department;
-import web.clockIn.dao.DepartmentDao;
+import web.clockIn.dao.ClockDepartmentDao;
 
 @Repository
-public class DepartmentDaoImpl implements DepartmentDao {
+public class ClockDepartmentDaoImpl implements ClockDepartmentDao {
 
 	@PersistenceContext
 	private Session session;
