@@ -32,8 +32,11 @@ public class SpringMvcConfig implements WebMvcConfigurer {
 
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
-		registry.addMapping("/**").allowedOriginPatterns("*").allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-				.allowCredentials(true).maxAge(3600);
+		registry.addMapping("/**")
+				.allowedOrigins("http://localhost:5500", "http://localhost:5501", "http://127.0.0.1:5500",
+						"http://127.0.0.1:5501")
+				.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS").allowedHeaders("*").allowCredentials(true)
+				.maxAge(3600);
 	}
 
 	// 註冊檢查登入攔截器

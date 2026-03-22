@@ -13,4 +13,5 @@ public interface AttendanceDao {
 
 	AttendanceRecord findTodayRecord(Long employeeId, java.sql.Date today);
 
+	java.util.List<core.entity.AttendanceRecord> findHistoryByMonth(Long employeeId, int year, int month);
 }

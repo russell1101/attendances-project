@@ -6,6 +6,7 @@ import java.sql.Time;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 import javax.transaction.Transactional;
 
@@ -24,6 +25,7 @@ import core.exception.BusinessException;
 import web.clockIn.dao.AttendanceDao;
 import web.clockIn.dao.ClockDepartmentDao;
 import web.clockIn.dao.ClockEmployeeDao;
+import web.clockIn.dto.AttendanceHistoryDto;
 import web.clockIn.dto.ClockInResultDto;
 import web.clockIn.dto.ClockStatusDto;
 import web.clockIn.service.ClockService;
@@ -187,5 +189,41 @@ public class ClockServiceImpl implements ClockService {
 
 		return new ClockStatusDto(hasClockedIn, hasClockedOut, hasClockedIn ? record.getClockInTime().toString() : null,
 				hasClockedOut ? record.getClockOutTime().toString() : null);
+	}
+
+	@Override
+	public List<AttendanceHistoryDto> getMonthlyHistory(Long employeeId, int year, int month) {
+		List<AttendanceRecord> records = attendanceDao.findHistoryByMonth(employeeId, year, month);
+		List<AttendanceHistoryDto> dtoList = new java.util.ArrayList<>();
+
+		for (AttendanceRecord record : records) {
+			AttendanceHistoryDto dto = new AttendanceHistoryDto();
+
+			// 日期轉字串
+			if (record.getWorkDate() != null) {
+				dto.setWorkDate(record.getWorkDate().toString());
+			}
+
+			if (record.getClockInTime() != null) {
+				dto.setClockInTime(record.getClockInTime().toString());
+			}
+			if (record.getClockOutTime() != null) {
+				dto.setClockOutTime(record.getClockOutTime().toString());
+			}
+
+			dto.setClockInStatus(record.getClockInStatus());
+			dto.setClockOutStatus(record.getClockOutStatus());
+
+			// 點數轉換 (如果你的 Entity 點數型態不同，請對應轉型)
+			if (record.getPointsAwarded() != null) {
+				dto.setPointsAwarded(record.getPointsAwarded().intValue());
+			} else {
+				dto.setPointsAwarded(0);
+			}
+
+			dtoList.add(dto);
+		}
+
+		return dtoList;
 	}
 }
