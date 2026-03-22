@@ -8,10 +8,9 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import core.entity.AttendanceRecord;
 import core.entity.Department;
@@ -28,6 +27,7 @@ import web.clockIn.dao.ClockEmployeeDao;
 import web.clockIn.dto.AttendanceHistoryDto;
 import web.clockIn.dto.ClockInResultDto;
 import web.clockIn.dto.ClockStatusDto;
+import web.clockIn.dto.EmployeeProfileDto;
 import web.clockIn.service.ClockService;
 
 @Service
@@ -191,6 +191,7 @@ public class ClockServiceImpl implements ClockService {
 				hasClockedOut ? record.getClockOutTime().toString() : null);
 	}
 
+	// 取得打卡歷程
 	@Override
 	public List<AttendanceHistoryDto> getMonthlyHistory(Long employeeId, int year, int month) {
 		List<AttendanceRecord> records = attendanceDao.findHistoryByMonth(employeeId, year, month);
@@ -225,5 +226,37 @@ public class ClockServiceImpl implements ClockService {
 		}
 
 		return dtoList;
+	}
+
+	// 取得會員資訊
+	@Override
+	public EmployeeProfileDto getEmployeeProfile(Long employeeId) {
+		Employee emp = employeeDao.findById(employeeId);
+
+		if (emp == null) {
+			return null;
+		}
+
+		String deptName = "--";
+		if (emp.getDepartmentId() != null) {
+			Department dept = departmentDao.findById(emp.getDepartmentId());
+			if (dept != null) {
+				deptName = dept.getDepartmentName();
+			}
+		}
+
+		String statusName = "--";
+		if (emp.getEmployeeStatusId() != null) {
+			EmployeeStatusEnum statusEnum = EmployeeStatusEnum.fromId(emp.getEmployeeStatusId());
+
+			if (statusEnum != null) {
+				statusName = statusEnum.getDescription();
+			}
+		}
+
+		return EmployeeProfileDto.builder().employeeId(emp.getEmployeeId()).name(emp.getName()).email(emp.getEmail())
+				.departmentName(deptName).hireDate(emp.getHireDate() != null ? emp.getHireDate().toString() : "")
+				.currentPoints(emp.getCurrentPoints() != null ? emp.getCurrentPoints().intValue() : 0)
+				.statusName(statusName).isActive(emp.getIsActive()).build();
 	}
 }

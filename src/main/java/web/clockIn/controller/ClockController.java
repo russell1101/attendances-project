@@ -9,10 +9,12 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 import core.entity.Employee;
+import core.exception.BusinessException;
 import core.util.ApiResponse;
 import web.clockIn.dto.AttendanceHistoryDto;
 import web.clockIn.dto.ClockInResultDto;
 import web.clockIn.dto.ClockStatusDto;
+import web.clockIn.dto.EmployeeProfileDto;
 import web.clockIn.service.ClockService;
 
 @RestController
@@ -53,6 +55,19 @@ public class ClockController {
 				month);
 
 		return ApiResponse.success(historyList);
+	}
+
+	// 取得個人資訊
+	@GetMapping("/profile")
+	public ApiResponse<EmployeeProfileDto> getProfile(@SessionAttribute("employee") Employee employee) {
+
+		EmployeeProfileDto profile = service.getEmployeeProfile(employee.getEmployeeId());
+
+		if (profile == null) {
+			throw new BusinessException("系統異常：無法取得員工個資");
+		}
+
+		return ApiResponse.success(profile);
 	}
 
 }

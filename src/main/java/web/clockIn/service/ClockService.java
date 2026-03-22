@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import web.clockIn.dto.AttendanceHistoryDto;
 import web.clockIn.dto.ClockInResultDto;
 import web.clockIn.dto.ClockStatusDto;
+import web.clockIn.dto.EmployeeProfileDto;
 
 @Service
 public interface ClockService {
@@ -16,4 +17,6 @@ public interface ClockService {
 	ClockInResultDto clockOut(Long employeeId);
 
 	java.util.List<AttendanceHistoryDto> getMonthlyHistory(Long employeeId, int year, int month);
+
+	EmployeeProfileDto getEmployeeProfile(Long employeeId);
 }
