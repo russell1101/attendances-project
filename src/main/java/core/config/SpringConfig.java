@@ -15,11 +15,12 @@ import org.springframework.jndi.JndiObjectFactoryBean;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBuilder;
 import org.springframework.orm.hibernate5.SpringSessionContext;
+import org.springframework.stereotype.Controller;
 import org.springframework.transaction.TransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
-@ComponentScan({ "web", "core" })
+@ComponentScan(basePackages = { "web", "core" }, excludeFilters = @ComponentScan.Filter(Controller.class))
 @EnableAspectJAutoProxy
 @EnableTransactionManagement
 public class SpringConfig {
@@ -34,8 +35,7 @@ public class SpringConfig {
 
 	@Bean
 	public SessionFactory sessionFactory() throws IllegalArgumentException, NamingException {
-		return new LocalSessionFactoryBuilder(dataSource())
-				.scanPackages("core.entity", "web")
+		return new LocalSessionFactoryBuilder(dataSource()).scanPackages("core.entity", "web")
 				.addProperties(getHibernateProperties()).buildSessionFactory();
 	}
 

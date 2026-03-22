@@ -34,4 +34,13 @@ public class AttendanceDaoImpl implements AttendanceDao {
 				.setParameter("key", key).uniqueResult();
 		return setting != null ? setting.getSettingValue() : "0";
 	}
+
+	// 找到今日打卡紀錄
+	@Override
+	public AttendanceRecord findTodayRecord(Long employeeId, java.sql.Date today) {
+		return session
+				.createQuery("FROM AttendanceRecord WHERE employeeId = :empId AND workDate = :today",
+						AttendanceRecord.class)
+				.setParameter("empId", employeeId).setParameter("today", today).uniqueResult();
+	}
 }

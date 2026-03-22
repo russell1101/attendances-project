@@ -7,6 +7,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.ByteArrayHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -17,7 +19,8 @@ import core.interceptor.EmployeeInterceptor;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan({ "web", "core.exception" })
+@ComponentScan(basePackages = { "web", "core.exception" }, useDefaultFilters = false, includeFilters = {
+		@ComponentScan.Filter(Controller.class), @ComponentScan.Filter(ControllerAdvice.class) })
 public class SpringMvcConfig implements WebMvcConfigurer {
 	@Override
 	public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {

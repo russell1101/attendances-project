@@ -12,4 +12,5 @@ import lombok.NoArgsConstructor;
 public class ClockInResultDto {
 	private String status; // 準時/遲到
 	private BigDecimal pointsChanged; // 異動點數
+	private Long lateMinutes;
 }
