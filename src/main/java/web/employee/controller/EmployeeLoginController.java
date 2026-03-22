@@ -1,48 +1,31 @@
 package web.employee.controller;
 
-import java.io.IOException;
-import javax.naming.NamingException;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.google.gson.Gson;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.google.gson.JsonObject;
 
-import core.pojo.Employee;
+import core.entity.Employee;
+import core.util.ApiResponse;
 import web.employee.service.EmployeeService;
-import web.employee.service.impl.EmployeeServiceImpl;
 
-@WebServlet("/employee/login-front")
-public class EmployeeLoginController extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+@RestController
+@RequestMapping("/frontUser/employee/login")
+public class EmployeeLoginController {
+	@Autowired
 	private EmployeeService employeeService;
 
-	@Override
-	public void init() throws ServletException {
-		try {
-			employeeService = new EmployeeServiceImpl();
-		} catch (NamingException e) {
-			e.printStackTrace();
-		}
-	}
-
-	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		Gson gson = new Gson();
-		Employee employee = gson.fromJson(req.getReader(), Employee.class);
-		
-		// service層執行後回應
-		Employee returnEmployee = employeeService.login(employee);
+	@PostMapping("/employeeLogin")
+	public ApiResponse<JsonObject> employeeLogin(@RequestBody Employee employee, HttpServletRequest req) {
+		employee = employeeService.login(employee);
 		JsonObject respBody = new JsonObject();
-		
-		// 回傳不是null即是有此member且密碼一致
-		boolean success = returnEmployee != null;
-		respBody.addProperty("success", success);
-
+		boolean success = employee != null;
 		// 登入驗證成功
 		if (success) {
 			if (req.getSession(false) != null) {
@@ -50,22 +33,11 @@ public class EmployeeLoginController extends HttpServlet {
 				req.changeSessionId();
 			}
 			HttpSession session = req.getSession();
-			// 此屬性物件即⽤來區分是否登⼊中
-			session.setAttribute("employee", returnEmployee);
-			// 取得欲前往的網址
+			session.setAttribute("employee", employee);
 			String targetPath = (String) session.getAttribute("employeeTargetPath");
-			// 首頁
-			String location = "employee-main-page.html";
-			// 建議前端跳轉到哪一頁
-			targetPath = targetPath == null ? location : targetPath;
-			
 			respBody.addProperty("location", targetPath);
-		} else {
-			// 登⼊失敗回傳訊息
-			String errMsg = "使⽤者名稱或密碼錯誤";
-			respBody.addProperty("errMsg", errMsg);
+			return ApiResponse.success(respBody, targetPath);
 		}
-		resp.setContentType("application/json");
-		resp.getWriter().write(respBody.toString());
+		return ApiResponse.error("系統錯誤");
 	}
 }

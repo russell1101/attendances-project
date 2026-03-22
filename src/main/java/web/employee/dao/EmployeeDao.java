@@ -1,7 +1,8 @@
 package web.employee.dao;
 
 import java.util.List;
-import core.pojo.Employee;
+import core.entity.Employee;
+
 
 public interface EmployeeDao {
 	

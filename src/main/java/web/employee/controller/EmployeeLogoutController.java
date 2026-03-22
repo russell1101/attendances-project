@@ -1,27 +1,18 @@
 package web.employee.controller;
 
-import java.io.IOException;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.support.SessionStatus;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+@RestController
+@RequestMapping("/frontUser/employee/login")
+public class EmployeeLogoutController {
 
-import com.google.gson.JsonObject;
-
-@WebServlet("/employee/logout-front")
-public class EmployeeLogoutController extends HttpServlet{
-	private static final long serialVersionUID = 1L;
-	
-	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		JsonObject respBody = new JsonObject();
-		if (req.getSession(false) != null) {
-			req.getSession().invalidate();
-			respBody.addProperty("success", true);
-		}
-		resp.setContentType("application/json");
-		resp.getWriter().write(respBody.toString());
+	@GetMapping("employeeLogout")
+	@ResponseBody
+	public void employeeLogout(SessionStatus sessionStatus) {
+		sessionStatus.setComplete();
 	}
 }
