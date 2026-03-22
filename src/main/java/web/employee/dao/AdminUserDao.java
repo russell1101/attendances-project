@@ -1,6 +1,6 @@
 package web.employee.dao;
 
-import core.pojo.AdminUser;
+import core.entity.AdminUser;
 
 public interface AdminUserDao {
 	
