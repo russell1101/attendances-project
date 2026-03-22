@@ -1,6 +1,6 @@
 package web.employee.service;
 
-import core.pojo.AdminUser;
+import core.entity.AdminUser;
 
 public interface AdminUserService {
 	

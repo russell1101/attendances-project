@@ -1,35 +1,38 @@
 package web.employee.service.impl;
 
-import javax.naming.NamingException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import core.pojo.Employee;
+import core.entity.Employee;
+import core.exception.BusinessException;
 import web.employee.dao.EmployeeDao;
-import web.employee.dao.impl.EmployeeDaoImpl;
 import web.employee.service.EmployeeService;
 
+@Service
+@Transactional
 public class EmployeeServiceImpl implements EmployeeService {
+	@Autowired
 	private EmployeeDao employeeDao;
-
-	public EmployeeServiceImpl() throws NamingException {
-		employeeDao = new EmployeeDaoImpl();
-	}
 
 	@Override
 	public Employee login(Employee employee) {
-		if (employee.getEmail() == null || employee.getEmail().isEmpty()) {
-			return null;
-		}
-		if (employee.getPasswordHash() == null || employee.getPasswordHash().isEmpty()) {
-			return null;
-		}
 		Employee returnEmployee = employeeDao.selectByEmail(employee.getEmail());
 		// 判斷是否有此member
-		if (returnEmployee != null) {
-			// 判斷回傳密碼與輸入密碼是否一致
-			if (returnEmployee.getPasswordHash().equals(employee.getPasswordHash())) {
-				return returnEmployee;
-			}
+		if (returnEmployee == null) {
+			throw new BusinessException("無此帳號");
 		}
-		return null;
+
+		// 判斷回傳密碼與輸入密碼是否一致
+		if (returnEmployee.getPasswordHash().equals(employee.getPasswordHash())) {
+			throw new BusinessException("密碼錯誤");
+		}
+		
+		// 判斷帳號是否停用
+		if (!returnEmployee.getIsActive()) {
+			throw new BusinessException("帳號停用");
+		}
+		
+		return returnEmployee;
 	}
 }

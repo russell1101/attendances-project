@@ -8,7 +8,11 @@ import javax.servlet.http.HttpFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import core.pojo.AdminUser;
+
+import com.google.gson.JsonObject;
+import core.entity.AdminUser;
+
+
 
 @WebFilter("/adminUser/*")
 public class AdminUserLoginFilter extends HttpFilter {
@@ -17,24 +21,19 @@ public class AdminUserLoginFilter extends HttpFilter {
 	@Override
 	protected void doFilter(HttpServletRequest req, HttpServletResponse res, FilterChain chain)
 			throws IOException, ServletException {
-		try {
-			String path = req.getServletPath();
-			if (path.contains("/adminUser/login-backend") || path.endsWith(".js")
-					|| path.endsWith(".css")) { // 改用contains避免路徑出現異常排除登入頁面、js檔、css檔
-				chain.doFilter(req, res);
-			} else {
-				HttpSession session = req.getSession();
-				AdminUser adminUser = (AdminUser) session.getAttribute("adminUser");
-				if (adminUser != null) {
-					chain.doFilter(req, res);
-				} else {
-					String targetPath = req.getRequestURL().toString();
-					session.setAttribute("adminUserTargetPath", targetPath);
-					req.getRequestDispatcher("login-backend.html").forward(req, res); // 直接跳轉⾄登⼊⾴
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		JsonObject respbody = new JsonObject();
+		HttpSession session = req.getSession();
+		AdminUser adminUser = (AdminUser) session.getAttribute("adminUser");
+		if (adminUser != null) {
+			chain.doFilter(req, res);
+		} else {
+			String targetPath = req.getRequestURL().toString();
+            session.setAttribute("adminUserTargetPath", targetPath);
+			respbody.addProperty("success", -999);
+			respbody.addProperty("errMsg", "未登入");
+			
+			res.setContentType("application/json;charset=UTF-8");
+			res.getWriter().write(respbody.toString());
 		}
 	}
 }
