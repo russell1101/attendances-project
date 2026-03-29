@@ -8,14 +8,20 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import core.enums.AttendanceStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -38,6 +44,11 @@ public class AttendanceRecord implements Serializable {
 
 	@Column(name = "employee_id", nullable = false)
 	private Long employeeId;
+	
+	@ManyToOne
+	@JoinColumn(name = "employee_id", insertable = false, updatable = false)
+	@JsonIgnore
+	private Employee employee; 
 
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
 	@Column(name = "work_date", nullable = false)
@@ -51,11 +62,13 @@ public class AttendanceRecord implements Serializable {
 	@Column(name = "clock_out_time")
 	private Time clockOutTime;
 
+	@Enumerated(EnumType.STRING)
 	@Column(name = "clock_in_status")
-	private String clockInStatus;
+	private AttendanceStatus clockInStatus;
 
+	@Enumerated(EnumType.STRING)
 	@Column(name = "clock_out_status")
-	private String clockOutStatus;
+	private AttendanceStatus clockOutStatus;
 
 	@Column(name = "points_awarded", nullable = false)
 	private BigDecimal pointsAwarded;
