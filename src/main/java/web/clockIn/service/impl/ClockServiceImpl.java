@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import core.annotation.DbOperation;
 import core.entity.AttendanceRecord;
 import core.entity.Department;
 import core.entity.Employee;
@@ -41,6 +42,7 @@ public class ClockServiceImpl implements ClockService {
 	private ClockDepartmentDao departmentDao;
 
 	@Override
+	@DbOperation(action = "員工打卡上班")
 	public ClockInResultDto clockIn(Long employeeId) {
 		// 取得當前時間與日期
 		LocalDate today = LocalDate.now();
@@ -126,6 +128,7 @@ public class ClockServiceImpl implements ClockService {
 	}
 
 	@Override
+	@DbOperation(action = "員工打卡下班")
 	public ClockInResultDto clockOut(Long employeeId) {
 
 		LocalDate today = LocalDate.now();
