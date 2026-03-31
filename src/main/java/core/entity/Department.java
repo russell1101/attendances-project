@@ -31,7 +31,7 @@ public class Department implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "department_id")
-	private Integer departmentId;
+	private Long departmentId;
 
 	@Column(name = "department_name", unique = true, nullable = false)
 	private String departmentName;

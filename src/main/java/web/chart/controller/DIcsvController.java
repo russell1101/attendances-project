@@ -21,8 +21,8 @@ public class DIcsvController {
     private String exportCsv(
             @RequestParam String startDate,
             @RequestParam String endDate,
-            @RequestParam(required = false) Integer deptId,
-            @RequestParam(required = false) Integer empId,
+            @RequestParam(required = false) Long deptId,
+            @RequestParam(required = false) Long empId,
             HttpServletResponse resp) {
 
         resp.setContentType("text/csv;charset=UTF-8");

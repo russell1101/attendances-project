@@ -34,7 +34,7 @@ public class Employee implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "employee_id")
-	private Integer employeeId;
+	private Long employeeId;
 	
 	@ManyToOne
 	@JoinColumn(name = "department_id", insertable = false, updatable = false)

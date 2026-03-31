@@ -19,8 +19,8 @@ public class ChartController {
 	public Chart getChart(
 			@RequestParam String startDate,
 			@RequestParam String endDate,
-			@RequestParam(required = false) Integer empId,
-			@RequestParam(required = false) Integer deptId) {
+			@RequestParam(required = false) Long empId,
+			@RequestParam(required = false) Long deptId) {
 		return service.getChartAllData(startDate, endDate, deptId, empId);
 	}
 }
