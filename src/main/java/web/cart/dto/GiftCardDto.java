@@ -14,4 +14,5 @@ public class GiftCardDto {
 	private Timestamp exchangedAt;
 	private Timestamp usedAt;
 	private Timestamp expiresAt;
+	private String productImageBase64;
 }

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import core.annotation.DbOperation;
 import core.entity.Employee;
 import core.entity.GiftCard;
 import core.entity.PointTransaction;
@@ -65,6 +66,7 @@ public class CartProductServiceImpl implements CartProductService {
 	}
 
 	@Override
+	@DbOperation(action = "員工購買禮券")
 	public BuyResultDto buyProduct(Long employeeId, Long productId, Integer qty) {
 		if (qty <= 0) {
 			throw new BusinessException("購買數量必須大於 0");

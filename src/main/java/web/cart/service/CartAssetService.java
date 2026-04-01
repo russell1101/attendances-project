@@ -6,4 +6,8 @@ public interface CartAssetService {
 
 	UserAssetDto getUserAssets(Long employeeId);
 
+	void exchangeGiftCard(Long employeeId, Long cardId);
+
+	void processExpiredGiftCards();
+
 }
