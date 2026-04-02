@@ -15,7 +15,7 @@ public class ChartController {
 	@Autowired 
 	private ChartService service;
 	
-	@GetMapping
+	@GetMapping("/chartData")
 	public Chart getChart(
 			@RequestParam String startDate,
 			@RequestParam String endDate,

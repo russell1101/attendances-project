@@ -18,7 +18,7 @@ public class GetEmpController {
 	private ChartService service;
 	
 	@GetMapping("/getEmps")
-	public List<Employee> getEmps(@RequestParam(required = false) Integer deptId){
+	public List<Employee> getEmps(@RequestParam(required = false) Long deptId){
 		return service.getEmpOptions(deptId);
 	}
 }
