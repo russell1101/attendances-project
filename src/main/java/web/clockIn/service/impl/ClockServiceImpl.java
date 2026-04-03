@@ -77,7 +77,7 @@ public class ClockServiceImpl implements ClockService {
 
 		// 判斷準時/遲到
 		boolean isOnTime = nowTime.compareTo(dept.getWorkStartTime().toLocalTime()) <= 0;
-		String status = isOnTime ? AttendanceStatus.ON_TIME.name() : AttendanceStatus.LATE.name();
+		AttendanceStatus status = isOnTime ? AttendanceStatus.ON_TIME : AttendanceStatus.LATE;
 
 		Long lateMinutes = 0L;
 		if (!isOnTime) {
@@ -161,7 +161,7 @@ public class ClockServiceImpl implements ClockService {
 		Department dept = departmentDao.findById(emp.getDepartmentId());
 		boolean isNormalLeave = nowTime.compareTo(dept.getWorkEndTime().toLocalTime()) >= 0;
 
-		String status = isNormalLeave ? AttendanceStatus.ON_TIME.name() : AttendanceStatus.EARLY_LEAVE.name();
+		AttendanceStatus status = isNormalLeave ? AttendanceStatus.ON_TIME : AttendanceStatus.EARLY_LEAVE;
 
 		Long earlyLeaveMinutes = 0L;
 		if (!isNormalLeave) {
@@ -218,7 +218,7 @@ public class ClockServiceImpl implements ClockService {
 			dto.setClockInStatus(record.getClockInStatus());
 			dto.setClockOutStatus(record.getClockOutStatus());
 
-			// 點數轉換 (如果你的 Entity 點數型態不同，請對應轉型)
+			// 點數轉換
 			if (record.getPointsAwarded() != null) {
 				dto.setPointsAwarded(record.getPointsAwarded().intValue());
 			} else {
