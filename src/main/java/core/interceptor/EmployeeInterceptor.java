@@ -14,9 +14,9 @@ public class EmployeeInterceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 
-		if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
-			return true;
-		}
+//		if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+//			return true;
+//		}
 		
 		HttpSession session = request.getSession(false);
 
