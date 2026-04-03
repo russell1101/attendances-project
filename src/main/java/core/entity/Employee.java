@@ -10,6 +10,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -33,6 +35,10 @@ public class Employee implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "employee_id")
 	private Long employeeId;
+	
+	@ManyToOne
+	@JoinColumn(name = "department_id", insertable = false, updatable = false)
+	private Department department;
 
 	@Column(name = "name", nullable = false)
 	private String name;

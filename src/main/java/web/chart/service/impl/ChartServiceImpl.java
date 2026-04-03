@@ -25,12 +25,12 @@ public class ChartServiceImpl implements ChartService {
     }
 
     @Override
-    public List<Employee> getEmpOptions(Integer deptId) {
+    public List<Employee> getEmpOptions(Long deptId) {
             return dao.getEmployees(deptId);
     }
 
     @Override
-    public Chart getChartAllData(String startDate, String endDate, Integer deptId, Integer empId) {
+    public Chart getChartAllData(String startDate, String endDate, Long deptId, Long empId) {
             
             Chart chart = new Chart();
 
@@ -72,7 +72,7 @@ public class ChartServiceImpl implements ChartService {
     }
 
     @Override
-    public String getCsvString(String startDate, String endDate, Integer deptId, Integer empId) {
+    public String getCsvString(String startDate, String endDate, Long deptId, Long empId) {
         List<Map<String, Object>> data = dao.getAttendanceList(startDate, endDate, deptId, empId);
         
         StringBuilder sb = new StringBuilder();

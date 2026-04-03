@@ -8,14 +8,14 @@ import web.chart.vo.Chart;
 
 public interface ChartService {
     // 圖表資料
-	Chart getChartAllData(String startDate, String endDate, Integer deptId, Integer empId);
+	Chart getChartAllData(String startDate, String endDate, Long deptId, Long empId);
     
     // 下拉選單：部門
 	List<Department> getDeptOptions(); 
     
     // 下拉選單：員工
-	List<Employee> getEmpOptions(Integer deptId);
+	List<Employee> getEmpOptions(Long deptId);
     
     // 下載CSV 
-	String getCsvString(String startDate, String endDate, Integer deptId, Integer empId);
+	String getCsvString(String startDate, String endDate, Long deptId, Long empId);
 }
