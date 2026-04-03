@@ -31,21 +31,21 @@ public class ChartDaoImpl implements ChartDao {
 
 	// 員工資訊
     @Override
-    public List<Employee> getEmployees(Integer deptId) {
+    public List<Employee> getEmployees(Long deptId) {
         if (deptId != null) {
-            String hql = "FROM Employee e WHERE e.department.departmentId = :deptId";
+            String hql = "FROM Employee e JOIN FETCH e.department WHERE e.department.departmentId = :deptId";
             return session.createQuery(hql, Employee.class)
                           .setParameter("deptId", deptId)
                           .getResultList();
         } else {
-            String hql = "FROM Employee";
+            String hql = "FROM Employee e JOIN FETCH e.department";
             return session.createQuery(hql, Employee.class).getResultList();
         }
     }
 
 	// 圓餅圖
 	@Override
-	public Chart getPie(String startDate, String endDate, Integer deptId) {
+	public Chart getPie(String startDate, String endDate, Long deptId) {
 			StringBuilder hql = new StringBuilder();
 			hql.append("SELECT ");
 			hql.append("  SUM(CASE WHEN ar.clockInStatus = 'ON_TIME' THEN 1 ELSE 0 END), ");
@@ -106,7 +106,7 @@ public class ChartDaoImpl implements ChartDao {
 
 	// 長條圖
 	@Override
-	public Chart getWorkingTime(String startDate, String endDate, Integer empId) {
+	public Chart getWorkingTime(String startDate, String endDate, Long empId) {
 			String sql = "SELECT work_date, " 
 					+ "TIMESTAMPDIFF(HOUR, clock_in_time, clock_out_time) AS workHour "
 					+ "FROM attendance_records " 
@@ -138,7 +138,7 @@ public class ChartDaoImpl implements ChartDao {
 
 	// 散佈圖
 	@Override
-	public Chart getCheckedStatus(String startDate, String endDate, Integer empId) {
+	public Chart getCheckedStatus(String startDate, String endDate, Long empId) {
 			String hql = "SELECT ar.clockInTime, ar.clockOutTime " + "FROM AttendanceRecord ar "
 					+ "WHERE ar.employee.employeeId = :empId " + "AND ar.workDate BETWEEN :startDate AND :endDate "
 					+ "ORDER BY ar.workDate";
@@ -169,7 +169,7 @@ public class ChartDaoImpl implements ChartDao {
 
 	// 統計數據
 	@Override
-	public Chart getSummaryData(String startDate, String endDate, Integer deptId) {
+	public Chart getSummaryData(String startDate, String endDate, Long deptId) {
 			StringBuilder hql = new StringBuilder();
 			hql.append("SELECT ");
 			hql.append("  SUM(CASE WHEN ar.clockInStatus = 'LATE' THEN 1 ELSE 0 END), ");
@@ -208,8 +208,8 @@ public class ChartDaoImpl implements ChartDao {
 
 	// 下載CSV
 	@Override
-	public List<Map<String, Object>> getAttendanceList(String startDate, String endDate, Integer deptId,
-			Integer empId) {
+	public List<Map<String, Object>> getAttendanceList(String startDate, String endDate, Long deptId,
+			Long empId) {
 			StringBuilder hql = new StringBuilder();
 			hql.append("SELECT ar.employee.name, ");
 			hql.append("       ar.employee.department.departmentName, ");
