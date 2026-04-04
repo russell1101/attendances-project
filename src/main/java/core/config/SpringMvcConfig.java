@@ -26,6 +26,9 @@ public class SpringMvcConfig implements WebMvcConfigurer {
 	
 	@Autowired
 	private EmployeeInterceptor employeeInterceptor;
+
+	@Autowired
+	private AdminInterceptor adminInterceptor;
 	
 	@Override
 	public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
@@ -49,7 +52,7 @@ public class SpringMvcConfig implements WebMvcConfigurer {
 
 		// 後台
 		// TODO: [MOCK] 正式上線前移除 "/admin/mock-login" 的 excludePathPatterns
-		registry.addInterceptor(new AdminInterceptor()).addPathPatterns("/admin/**")
+		registry.addInterceptor(adminInterceptor).addPathPatterns("/admin/**")
 				.excludePathPatterns("/admin/employee/login", "/admin/mock-login"); // 放行後台登入api
 
 		// 前台
