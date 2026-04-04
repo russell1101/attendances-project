@@ -44,8 +44,9 @@ public class SpringMvcConfig implements WebMvcConfigurer {
 	public void addInterceptors(InterceptorRegistry registry) {
 
 		// 後台
+		// TODO: [MOCK] 正式上線前移除 "/admin/mock-login" 的 excludePathPatterns
 		registry.addInterceptor(new AdminInterceptor()).addPathPatterns("/admin/**")
-				.excludePathPatterns("/admin/employee/login"); // 放行後台登入api
+				.excludePathPatterns("/admin/employee/login", "/admin/mock-login"); // 放行後台登入api
 
 		// 前台
 		registry.addInterceptor(new EmployeeInterceptor()).addPathPatterns("/frontUser/**")
