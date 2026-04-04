@@ -22,16 +22,15 @@ public class RedemptionSummaryDto {
 	private Long usedCount;      // 已使用
 	private Long expiredCount;   // 已過期
 
-	// SELECT NEW 專用 constructor，null 安全處理 SUM 回傳值
-	public RedemptionSummaryDto(Long productId, String productName, Integer stock, Timestamp removedAt,
-			Long totalIssued, Long availableCount, Long usedCount, Long expiredCount) {
+	public RedemptionSummaryDto(long productId, String productName, int stock, java.util.Date removedAt,
+			long totalIssued, long availableCount, long usedCount, long expiredCount) {
 		this.productId = productId;
 		this.productName = productName;
 		this.stock = stock;
-		this.removedAt = removedAt;
-		this.totalIssued = totalIssued != null ? totalIssued : 0L;
-		this.availableCount = availableCount != null ? availableCount : 0L;
-		this.usedCount = usedCount != null ? usedCount : 0L;
-		this.expiredCount = expiredCount != null ? expiredCount : 0L;
+		this.removedAt = removedAt != null ? new Timestamp(removedAt.getTime()) : null;
+		this.totalIssued = totalIssued;
+		this.availableCount = availableCount;
+		this.usedCount = usedCount;
+		this.expiredCount = expiredCount;
 	}
 }
