@@ -77,6 +77,10 @@ public class CartProductServiceImpl implements CartProductService {
 			throw new BusinessException("找不到該商品");
 		}
 
+		if (product.getRemovedAt() != null) {
+			throw new BusinessException("此商品已下架，無法兌換");
+		}
+
 		if (product.getStock() < qty) {
 			throw new BusinessException("庫存不足，晚了一步被搶光了");
 		}

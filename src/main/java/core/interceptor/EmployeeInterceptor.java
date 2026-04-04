@@ -4,10 +4,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import core.exception.BusinessException;
 
+@Component
 public class EmployeeInterceptor implements HandlerInterceptor {
 
 	@Override
@@ -17,7 +19,7 @@ public class EmployeeInterceptor implements HandlerInterceptor {
 		if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
 			return true;
 		}
-		
+
 		HttpSession session = request.getSession(false);
 
 		if (session == null || session.getAttribute("employee") == null) {
