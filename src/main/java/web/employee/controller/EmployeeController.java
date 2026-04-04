@@ -16,9 +16,9 @@ import core.entity.Employee;
 import core.util.ApiResponse;
 import web.employee.service.EmployeeService;
 
+@CrossOrigin(origins = "http://127.0.0.1:5500", allowCredentials = "true")
 @RestController
 @RequestMapping("frontUser/employee")
-@CrossOrigin(origins = "http://127.0.0.1:5500", allowCredentials = "true") // ai產
 public class EmployeeController {
 	@Autowired
 	private EmployeeService service;

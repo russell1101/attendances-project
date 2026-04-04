@@ -2,6 +2,7 @@ package core.config;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.ByteArrayHttpMessageConverter;
@@ -22,6 +23,10 @@ import core.interceptor.EmployeeInterceptor;
 @ComponentScan(basePackages = { "web", "core.exception" }, useDefaultFilters = false, includeFilters = {
 		@ComponentScan.Filter(Controller.class), @ComponentScan.Filter(ControllerAdvice.class) })
 public class SpringMvcConfig implements WebMvcConfigurer {
+	
+	@Autowired
+	private EmployeeInterceptor employeeInterceptor;
+	
 	@Override
 	public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
 		MappingJackson2HttpMessageConverter messageConverter = new MappingJackson2HttpMessageConverter();
@@ -33,8 +38,7 @@ public class SpringMvcConfig implements WebMvcConfigurer {
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
 		registry.addMapping("/**")
-				.allowedOrigins("http://localhost:5500", "http://localhost:5501", "http://127.0.0.1:5500",
-						"http://127.0.0.1:5501")
+		.allowedOriginPatterns("*")
 				.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS").allowedHeaders("*").allowCredentials(true)
 				.maxAge(3600);
 	}
@@ -49,7 +53,7 @@ public class SpringMvcConfig implements WebMvcConfigurer {
 				.excludePathPatterns("/admin/employee/login", "/admin/mock-login"); // 放行後台登入api
 
 		// 前台
-		registry.addInterceptor(new EmployeeInterceptor()).addPathPatterns("/frontUser/**")
+		registry.addInterceptor(employeeInterceptor).addPathPatterns("/frontUser/**")
 				.excludePathPatterns("/frontUser/employee/login", "/frontUser/mock-login/**"); // 放行前台登入api
 	}
 }

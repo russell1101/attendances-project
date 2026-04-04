@@ -6,7 +6,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,15 +14,14 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.support.SessionStatus;
 
 import core.entity.AdminUser;
-import core.entity.Employee;
 import core.util.ApiResponse;
 import web.employee.dao.EmployeeDao;
+import web.employee.dto.EmployeeDto;
 import web.employee.service.AdminUserService;
 
 
 @RestController
 @RequestMapping("admin")
-@CrossOrigin(origins = "http://127.0.0.1:5500", allowCredentials = "true") // ai產
 public class AdminUserController {
 	@Autowired
 	private AdminUserService service;
@@ -52,8 +50,8 @@ public class AdminUserController {
 	}
 	
 	@GetMapping("manage")
-	public ApiResponse<List<Employee>> manage() {
-		List<Employee> employeeList = dao.selectAll();
+	public ApiResponse<List<EmployeeDto>> manage() {
+		List<EmployeeDto> employeeList = dao.selectAll();
 		return ApiResponse.success(employeeList);
 	}
 }
