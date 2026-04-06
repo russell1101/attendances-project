@@ -22,6 +22,7 @@ import core.enums.EmployeeStatusEnum;
 import core.enums.GlobalSettingKeyEnum;
 import core.enums.PointTransactionType;
 import core.exception.BusinessException;
+import web.chart.websocket.ChartWebSocket;
 import web.clockIn.dao.AttendanceDao;
 import web.clockIn.dao.ClockDepartmentDao;
 import web.clockIn.dao.ClockEmployeeDao;
@@ -124,6 +125,8 @@ public class ClockServiceImpl implements ClockService {
 		txn.setRelatedId(record.getAttendanceId());
 		attendanceDao.savePointTransaction(txn);
 
+		// 通知圖表頁有新打卡資料
+		ChartWebSocket.broadcast("clockUpdate");
 		return new ClockInResultDto(status, pointsToAward, lateMinutes);
 	}
 
@@ -172,6 +175,8 @@ public class ClockServiceImpl implements ClockService {
 		record.setClockOutTime(sqlNowTime);
 		record.setClockOutStatus(status);
 
+		// 通知圖表頁有新打卡資料
+		ChartWebSocket.broadcast("clockUpdate");
 		return new ClockInResultDto(status, BigDecimal.ZERO, earlyLeaveMinutes);
 	}
 
