@@ -77,6 +77,10 @@ public class CartProductServiceImpl implements CartProductService {
 			throw new BusinessException("找不到該商品");
 		}
 
+		if (product.getRemovedAt() != null) {
+			throw new BusinessException("此商品已下架，無法兌換");
+		}
+
 		if (product.getStock() < qty) {
 			throw new BusinessException("庫存不足，晚了一步被搶光了");
 		}
@@ -133,10 +137,10 @@ public class CartProductServiceImpl implements CartProductService {
 			String randomCode = java.util.UUID.randomUUID().toString().substring(0, 8).toUpperCase();
 			giftCard.setGiftCode(randomCode);
 
-			// 處理過期時間
+			// 處理過期時間（固定 00:00:00，前端只顯示日期）
 			if (product.getValidDays() != null) {
-				java.time.LocalDateTime expiryDate = java.time.LocalDateTime.now().plusDays(product.getValidDays());
-				giftCard.setExpiresAt(java.sql.Timestamp.valueOf(expiryDate));
+				java.time.LocalDate expiryDate = java.time.LocalDate.now().plusDays(product.getValidDays());
+				giftCard.setExpiresAt(java.sql.Timestamp.valueOf(expiryDate.atStartOfDay()));
 			}
 
 			giftCardDao.save(giftCard);

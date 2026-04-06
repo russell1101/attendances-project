@@ -1,4 +1,4 @@
-package web.cart.dao.impl;
+package web.productManage.dao.impl;
 
 import java.util.List;
 
@@ -8,22 +8,27 @@ import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
 import core.entity.Product;
-import web.cart.dao.CartProductDao;
+import web.productManage.dao.AdminProductDao;
 
 @Repository
-public class CartProductDaoImpl implements CartProductDao {
+public class AdminProductDaoImpl implements AdminProductDao {
 
 	@PersistenceContext
 	private Session session;
 
 	@Override
 	public List<Product> findAll() {
-		return session.createQuery("FROM Product WHERE removedAt IS NULL", Product.class).list();
+		return session.createQuery("FROM Product ORDER BY createdAt DESC", Product.class).list();
 	}
 
 	@Override
 	public Product findById(Long productId) {
 		return session.get(Product.class, productId);
+	}
+
+	@Override
+	public void save(Product product) {
+		session.save(product);
 	}
 
 	@Override
