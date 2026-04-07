@@ -16,7 +16,7 @@ public class AdminUserDaoImpl implements AdminUserDao {
 
 	@Override
 	public AdminUser selectByUsername(String username) {
-		String hql = "FROM admin_users WHERE username = :username";
+		String hql = "FROM AdminUser WHERE username = :username";
 		Query<AdminUser> query = session.createQuery(hql, AdminUser.class)
 				.setParameter("username", username);
 		return query.getSingleResult();

@@ -39,6 +39,10 @@ public class Employee implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "department_id", insertable = false, updatable = false)
 	private Department department;
+	
+	@ManyToOne
+	@JoinColumn(name = "employee_status_id", insertable = false, updatable = false)
+	private EmployeeStatus employeeStatus;
 
 	@Column(name = "name", nullable = false)
 	private String name;
