@@ -14,21 +14,35 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.socket.config.annotation.EnableWebSocket;
+import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
+import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
 
 import core.interceptor.AdminInterceptor;
 import core.interceptor.EmployeeInterceptor;
+import web.chart.websocket.ChartWebSocket;
 
 @Configuration
 @EnableWebMvc
+@EnableWebSocket
 @ComponentScan(basePackages = { "web", "core.exception" }, useDefaultFilters = false, includeFilters = {
 		@ComponentScan.Filter(Controller.class), @ComponentScan.Filter(ControllerAdvice.class) })
-public class SpringMvcConfig implements WebMvcConfigurer {
+public class SpringMvcConfig implements WebMvcConfigurer,WebSocketConfigurer  {
 	
 	@Autowired
 	private EmployeeInterceptor employeeInterceptor;
 
 	@Autowired
 	private AdminInterceptor adminInterceptor;
+	
+    @Autowired
+    private ChartWebSocket chartWebSocket;
+    
+    @Override
+    public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
+        registry.addHandler(chartWebSocket, "/ws/admin/chart")
+                .setAllowedOrigins("*");
+    }
 	
 	@Override
 	public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
