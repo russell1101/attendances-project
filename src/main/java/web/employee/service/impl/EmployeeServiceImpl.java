@@ -1,5 +1,8 @@
 package web.employee.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -7,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import core.entity.Employee;
 import core.exception.BusinessException;
 import web.employee.dao.EmployeeDao;
+import web.employee.dto.EmployeeDto;
 import web.employee.service.EmployeeService;
 
 @Service
@@ -34,5 +38,17 @@ public class EmployeeServiceImpl implements EmployeeService {
 		}
 		
 		return returnEmployee;
+	}
+	
+	@Override
+	public List<EmployeeDto> getAllEmployees() {
+	    List<Employee> employees = employeeDao.selectAll(); 
+	    List<EmployeeDto> employeesDto = new ArrayList<>();
+	    
+	    for (Employee emp : employees) {
+	        EmployeeDto dto = new EmployeeDto(emp);
+	        employeesDto.add(dto);
+	    }
+	    return employeesDto;
 	}
 }
