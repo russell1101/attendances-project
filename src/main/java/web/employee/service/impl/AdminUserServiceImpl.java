@@ -5,8 +5,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import core.entity.AdminUser;
+import core.entity.Employee;
 import core.exception.BusinessException;
 import web.employee.dao.AdminUserDao;
+import web.employee.dao.EmployeeDao;
 import web.employee.service.AdminUserService;
 
 @Service
@@ -14,6 +16,8 @@ import web.employee.service.AdminUserService;
 public class AdminUserServiceImpl implements AdminUserService {
 	@Autowired
 	private AdminUserDao adminUserDao;
+	@Autowired
+	private EmployeeDao employeeDao;
 
 	@Override
 	public AdminUser login(AdminUser adminUser) {
@@ -23,7 +27,7 @@ public class AdminUserServiceImpl implements AdminUserService {
 			throw new BusinessException("無此帳號");
 		}
 		// 判斷回傳密碼與輸入密碼是否一致
-		if (!returnAdminUser.getPasswordHash().equals(adminUser.getPasswordHash())) {
+		if (returnAdminUser.getPasswordHash().equals(adminUser.getPasswordHash())) {
 			throw new BusinessException("密碼錯誤");
 		}
 		
@@ -34,4 +38,13 @@ public class AdminUserServiceImpl implements AdminUserService {
 		return returnAdminUser;
 	}
 
+	@Override
+	public int saveEmployee(Employee employee) {
+		return employeeDao.upsert(employee);
+	}
+
+	@Override
+	public int deleteEmployee(Long id) {
+		return employeeDao.deleteById(id);
+	}
 }
