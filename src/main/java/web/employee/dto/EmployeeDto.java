@@ -18,7 +18,9 @@ public class EmployeeDto {
 	private String googleSub;
 	private Date hireDate;
 	private BigDecimal currentPoints;
+	private Long departmentId;
 	private String departmentName;
+	private Long employeeStatusId;
 	private String employeeStatus;
 	private Boolean isActive;
 	private Timestamp createdAt;
@@ -32,6 +34,8 @@ public class EmployeeDto {
 			this.googleSub = emp.getGoogleSub();
 			this.hireDate = emp.getHireDate();
 			this.currentPoints = emp.getCurrentPoints();
+			this.departmentId = emp.getDepartmentId();
+			this.employeeStatusId = emp.getEmployeeStatusId();
 			this.isActive = emp.getIsActive();
 			this.createdAt = emp.getCreatedAt();
 			this.updatedAt = emp.getUpdatedAt();
