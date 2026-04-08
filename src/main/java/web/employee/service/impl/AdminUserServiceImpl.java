@@ -42,9 +42,12 @@ public class AdminUserServiceImpl implements AdminUserService {
 	public int saveEmployee(Employee employee) {
 		return employeeDao.upsert(employee);
 	}
-
+	
+	// 員工修改為停用狀態
 	@Override
 	public int deleteEmployee(Long id) {
-		return employeeDao.deleteById(id);
+		Employee employee = employeeDao.selectById(id);
+		employee.setIsActive(false);
+		return employeeDao.upsert(employee);
 	}
 }

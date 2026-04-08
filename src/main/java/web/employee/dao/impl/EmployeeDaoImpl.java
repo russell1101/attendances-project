@@ -23,13 +23,6 @@ public class EmployeeDaoImpl implements EmployeeDao{
 	}
 	
 	@Override
-	public int deleteById(Long id) {
-		Employee employee = selectById(id);
-		session.remove(employee);
-		return 1;
-	}
-	
-	@Override
 	public Employee selectById(Long id) {
 		return session.get(Employee.class, id);
 	}
@@ -44,7 +37,7 @@ public class EmployeeDaoImpl implements EmployeeDao{
 	
 	@Override
 	public List<Employee> selectAll() {
-		String hql = "FROM Employee";
+		String hql = "FROM Employee WHERE isActive = true";
 		Query<Employee> query = session.createQuery(hql, Employee.class); 
 		return query.getResultList();
 	}

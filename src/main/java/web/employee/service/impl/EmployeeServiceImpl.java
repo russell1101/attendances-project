@@ -31,24 +31,30 @@ public class EmployeeServiceImpl implements EmployeeService {
 		if (returnEmployee.getPasswordHash().equals(employee.getPasswordHash())) {
 			throw new BusinessException("密碼錯誤");
 		}
-		
+
 		// 判斷帳號是否停用
 		if (!returnEmployee.getIsActive()) {
 			throw new BusinessException("帳號停用");
 		}
-		
+
+		// 判斷帳號是否停用(離職)
+		if (returnEmployee.getEmployeeStatusId() == 2) {
+			throw new BusinessException("帳號停用");
+		}
+
 		return returnEmployee;
+
 	}
-	
+
 	@Override
 	public List<EmployeeDto> getAllEmployees() {
-	    List<Employee> employees = employeeDao.selectAll(); 
-	    List<EmployeeDto> employeesDto = new ArrayList<>();
-	    
-	    for (Employee emp : employees) {
-	        EmployeeDto dto = new EmployeeDto(emp);
-	        employeesDto.add(dto);
-	    }
-	    return employeesDto;
+		List<Employee> employees = employeeDao.selectAll();
+		List<EmployeeDto> employeesDto = new ArrayList<>();
+
+		for (Employee emp : employees) {
+			EmployeeDto dto = new EmployeeDto(emp);
+			employeesDto.add(dto);
+		}
+		return employeesDto;
 	}
 }
