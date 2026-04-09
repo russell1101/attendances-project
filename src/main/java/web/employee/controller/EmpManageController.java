@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 import core.entity.Employee;
 import core.util.ApiResponse;
 import web.employee.dto.EmployeeDto;
-import web.employee.service.AdminUserService;
 import web.employee.service.EmployeeService;
 
 @RestController
@@ -19,8 +18,6 @@ import web.employee.service.EmployeeService;
 public class EmpManageController {
 	@Autowired
 	private EmployeeService service;
-	@Autowired
-	private AdminUserService adminUserService;
 	
 	// 只看的到啟用狀態帳號
 	@GetMapping("manage")
@@ -36,7 +33,7 @@ public class EmpManageController {
 		if (employee == null) {
 			return ApiResponse.error("新增失敗");
 		} 
-			return ApiResponse.success(adminUserService.saveEmployee(employee));
+			return ApiResponse.success(service.saveEmployee(employee));
 	}
 	
 	@PostMapping("remove")
@@ -44,9 +41,9 @@ public class EmpManageController {
 	public ApiResponse<Integer> remove(@RequestBody Employee employee) {
 		final Long id = employee.getEmployeeId();
 		if (id == null) {
-			ApiResponse.error("刪除失敗");
+			return ApiResponse.error("刪除失敗");
 		}
-		return ApiResponse.success(adminUserService.deleteEmployee(id));
+		return ApiResponse.success(service.deleteEmployee(id));
 	}
 	
 	@PostMapping("update")
@@ -55,6 +52,6 @@ public class EmpManageController {
 		if (employee == null) {
 			return ApiResponse.error("更新失敗");
 		} 
-			return ApiResponse.success(adminUserService.saveEmployee(employee));
+			return ApiResponse.success(service.saveEmployee(employee));
 	}
 }
