@@ -23,20 +23,13 @@ public class DepartmentDaoImpl implements DepartmentDao{
 	}
 
 	@Override
-	public int deleteById(Integer id) {
-		Department department = selectById(id);
-		session.remove(department);
-		return 1;
-	}
-
-	@Override
-	public Department selectById(Integer id) {
+	public Department selectById(Long id) {
 		return session.get(Department.class, id);
 	}
 
 	@Override
 	public List<Department> selectAll() {
-		String hql = "FROM Department";
+		String hql = "FROM Department WHERE isActive = true";
 		Query<Department> query = session.createQuery(hql, Department.class); 
 		return query.getResultList();
 	}
