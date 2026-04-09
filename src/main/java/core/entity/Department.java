@@ -57,5 +57,7 @@ public class Department implements Serializable {
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	@Column(name = "updated_at", insertable = false, updatable = false)
 	private Timestamp updatedAt;
-
+	
+	@Column(name = "is_active", nullable = false)
+	private Boolean isActive;
 }

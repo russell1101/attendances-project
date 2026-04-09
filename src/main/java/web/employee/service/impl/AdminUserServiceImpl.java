@@ -3,12 +3,9 @@ package web.employee.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import core.entity.AdminUser;
-import core.entity.Employee;
 import core.exception.BusinessException;
 import web.employee.dao.AdminUserDao;
-import web.employee.dao.EmployeeDao;
 import web.employee.service.AdminUserService;
 
 @Service
@@ -16,8 +13,6 @@ import web.employee.service.AdminUserService;
 public class AdminUserServiceImpl implements AdminUserService {
 	@Autowired
 	private AdminUserDao adminUserDao;
-	@Autowired
-	private EmployeeDao employeeDao;
 
 	@Override
 	public AdminUser login(AdminUser adminUser) {
@@ -36,18 +31,5 @@ public class AdminUserServiceImpl implements AdminUserService {
 			throw new BusinessException("帳號停用");
 		}
 		return returnAdminUser;
-	}
-
-	@Override
-	public int saveEmployee(Employee employee) {
-		return employeeDao.upsert(employee);
-	}
-	
-	// 員工修改為停用狀態
-	@Override
-	public int deleteEmployee(Long id) {
-		Employee employee = employeeDao.selectById(id);
-		employee.setIsActive(false);
-		return employeeDao.upsert(employee);
 	}
 }

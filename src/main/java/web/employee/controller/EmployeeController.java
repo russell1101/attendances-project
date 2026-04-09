@@ -39,5 +39,4 @@ public class EmployeeController {
 	public void employeeLogout(SessionStatus sessionStatus) {
 		sessionStatus.setComplete();
 	}
-	
 }
