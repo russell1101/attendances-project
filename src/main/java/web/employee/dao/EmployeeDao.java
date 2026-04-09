@@ -7,8 +7,6 @@ public interface EmployeeDao {
 	
 	int upsert(Employee employee);
 	
-	int deleteById(Long id);
-	
 	Employee selectById(Long id);
 	
 	Employee selectByEmail(String email);
