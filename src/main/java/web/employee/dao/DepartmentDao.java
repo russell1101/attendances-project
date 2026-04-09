@@ -7,9 +7,7 @@ public interface DepartmentDao {
 	
 	int upsert(Department department);
 	
-	int deleteById(Integer id);
-	
-	Department selectById(Integer id);
+	Department selectById(Long id);
 	
 	List<Department> selectAll();
 

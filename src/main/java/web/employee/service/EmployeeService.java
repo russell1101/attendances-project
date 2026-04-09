@@ -6,8 +6,12 @@ import core.entity.Employee;
 import web.employee.dto.EmployeeDto;
 
 public interface EmployeeService {
-	
+
 	Employee login(Employee employee);
+
+	int saveEmployee(Employee employee);
+
+	int deleteEmployee(Long id);
 	
 	List<EmployeeDto> getAllEmployees();
 }

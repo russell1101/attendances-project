@@ -12,4 +12,6 @@ public interface EmployeeDao {
 	Employee selectByEmail(String email);
 	
 	List<Employee> selectAll();
+	
+	List<Long> selectDep();
 }

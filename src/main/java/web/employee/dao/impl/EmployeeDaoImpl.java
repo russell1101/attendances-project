@@ -41,4 +41,11 @@ public class EmployeeDaoImpl implements EmployeeDao{
 		Query<Employee> query = session.createQuery(hql, Employee.class); 
 		return query.getResultList();
 	}
+
+	@Override
+	public List<Long> selectDep() {
+		String hql = "SELECT e.department.departmentId FROM Employee e WHERE isActive = true";
+		Query<Long> query = session.createQuery(hql, Long.class);
+		return query.getResultList();
+	}
 }
