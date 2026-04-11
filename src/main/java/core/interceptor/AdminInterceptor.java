@@ -22,6 +22,8 @@ public class AdminInterceptor implements HandlerInterceptor {
 		HttpSession session = request.getSession(false);
 
 		if (session == null || session.getAttribute("adminUser") == null) {
+//			String targetPath = request.getRequestURL().toString();
+//			session.setAttribute("targetPath", targetPath);
 			throw new BusinessException(-999, "請先登入");
 		}
 
