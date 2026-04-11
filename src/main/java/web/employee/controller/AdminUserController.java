@@ -1,6 +1,7 @@
 package web.employee.controller;
 
-import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.support.SessionStatus;
 import core.entity.AdminUser;
-import core.entity.Department;
 import core.util.ApiResponse;
-import web.employee.dao.DepartmentDao;
 import web.employee.service.AdminUserService;
 
 @RestController
@@ -21,8 +20,6 @@ import web.employee.service.AdminUserService;
 public class AdminUserController {
 	@Autowired
 	private AdminUserService adminUserService;
-	@Autowired
-	private DepartmentDao departmentDao;
 	
 	@PostMapping("login")
 	public ApiResponse<AdminUser> login(@RequestBody AdminUser adminUser, HttpServletRequest req) {
@@ -35,6 +32,11 @@ public class AdminUserController {
 			}
 			HttpSession session = req.getSession();
 			session.setAttribute("adminUser", adminUser);
+			String targetPath = (String) session.getAttribute("targetPath");
+			// 確人有無欲跳轉網址
+			if (targetPath != null) {
+				return new ApiResponse<>(1,targetPath,adminUser);
+			}
 			return ApiResponse.success(adminUser);
 		}
 		return ApiResponse.error("系統錯誤");
@@ -44,10 +46,16 @@ public class AdminUserController {
 	public void AdminUserLogout(SessionStatus sessionStatus) {
 		sessionStatus.setComplete();
 	}
-
-	@GetMapping("departmentManage")
-	public ApiResponse<List<Department>> departmentManage() {
-		List<Department> departmentList = departmentDao.selectAll();
-		return ApiResponse.success(departmentList);
+	
+	// 判斷所有頁面是否登入中
+	@PostMapping("checkLogin")
+	public ApiResponse<AdminUser> checkLogin(@RequestBody Map<String, String> reqData,HttpSession session) {
+		AdminUser adminUser = (AdminUser) session.getAttribute("adminUser");
+		// 如果未登入傳入當前網址
+		if (adminUser == null) {
+			session.setAttribute("targetPath", reqData.get("targetPath"));
+	        return new ApiResponse<>(-999, "請重新登入", null); 
+	    }
+		return ApiResponse.success(adminUser);
 	}
 }
