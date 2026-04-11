@@ -65,12 +65,11 @@ public class SpringMvcConfig implements WebMvcConfigurer,WebSocketConfigurer  {
 	public void addInterceptors(InterceptorRegistry registry) {
 
 		// 後台
-		// TODO: [MOCK] 正式上線前移除 "/admin/mock-login" 的 excludePathPatterns
 		registry.addInterceptor(adminInterceptor).addPathPatterns("/admin/**")
-				.excludePathPatterns("/admin/login", "/admin/mock-login","/admin/checkLogin"); // 放行後台登入api
+				.excludePathPatterns("/admin/login","/admin/checkLogin"); // 放行後台登入api
 
 		// 前台
 		registry.addInterceptor(employeeInterceptor).addPathPatterns("/frontUser/**")
-				.excludePathPatterns("/frontUser/employee/login", "/frontUser/mock-login/**","/frontUser/employee/checkLogin"); // 放行前台登入api
+				.excludePathPatterns("/frontUser/employee/login","/frontUser/employee/checkLogin"); // 放行前台登入api
 	}
 }
