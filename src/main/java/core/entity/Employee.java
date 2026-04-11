@@ -50,7 +50,7 @@ public class Employee implements Serializable {
 	@Column(name = "email", nullable = false, unique = true)
 	private String email;
 
-	@Column(name = "password_hash")
+	@Column(name = "password_hash",updatable = false)
 	@JsonIgnore 
 	private String passwordHash;
 
