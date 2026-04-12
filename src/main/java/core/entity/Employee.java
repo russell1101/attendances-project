@@ -51,7 +51,6 @@ public class Employee implements Serializable {
 	private String email;
 
 	@Column(name = "password_hash",updatable = false)
-	@JsonIgnore 
 	private String passwordHash;
 
 	@Column(name = "google_sub", unique = true)

@@ -35,7 +35,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 		}
 		
 		// 判斷回傳密碼與輸入密碼是否一致
-		if (passwordEncoder.matches(employee.getPasswordHash(), returnEmployee.getPasswordHash())) {
+		if (!passwordEncoder.matches(employee.getPasswordHash(), returnEmployee.getPasswordHash())) {
 			throw new BusinessException("密碼錯誤");
 		}
 
