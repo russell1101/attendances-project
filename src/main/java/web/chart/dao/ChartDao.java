@@ -3,8 +3,6 @@ package web.chart.dao;
 import java.util.List;
 import java.util.Map;
 
-import org.hibernate.Session;
-
 import core.entity.Department;
 import core.entity.Employee;
 import web.chart.vo.Chart;
