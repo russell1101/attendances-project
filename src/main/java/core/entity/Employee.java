@@ -16,6 +16,7 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -51,6 +52,7 @@ public class Employee implements Serializable {
 	private String email;
 
 	@Column(name = "password_hash",updatable = false)
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private String passwordHash;
 
 	@Column(name = "google_sub", unique = true)
