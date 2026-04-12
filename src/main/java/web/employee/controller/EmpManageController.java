@@ -52,6 +52,6 @@ public class EmpManageController {
 		if (employee == null) {
 			return ApiResponse.error("更新失敗");
 		} 
-			return ApiResponse.success(service.saveEmployee(employee));
+			return ApiResponse.success(service.updateEmployee(employee));
 	}
 }

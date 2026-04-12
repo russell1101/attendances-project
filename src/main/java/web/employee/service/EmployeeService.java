@@ -10,6 +10,8 @@ public interface EmployeeService {
 	Employee login(Employee employee);
 
 	int saveEmployee(Employee employee);
+	
+	int updateEmployee(Employee employee);
 
 	int deleteEmployee(Long id);
 	
