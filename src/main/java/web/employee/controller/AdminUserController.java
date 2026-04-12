@@ -32,10 +32,10 @@ public class AdminUserController {
 			}
 			HttpSession session = req.getSession();
 			session.setAttribute("adminUser", adminUser);
-			String targetPath = (String) session.getAttribute("targetPath");
+			String adminTargetPath = (String) session.getAttribute("adminTargetPath");
 			// 確人有無欲跳轉網址
-			if (targetPath != null) {
-				return new ApiResponse<>(1,targetPath,adminUser);
+			if (adminTargetPath != null) {
+				return new ApiResponse<>(1,adminTargetPath,adminUser);
 			}
 			return ApiResponse.success(adminUser);
 		}
@@ -53,7 +53,7 @@ public class AdminUserController {
 		AdminUser adminUser = (AdminUser) session.getAttribute("adminUser");
 		// 如果未登入傳入當前網址
 		if (adminUser == null) {
-			session.setAttribute("targetPath", reqData.get("targetPath"));
+			session.setAttribute("adminTargetPath", reqData.get("adminTargetPath"));
 	        return new ApiResponse<>(-999, "請重新登入", null); 
 	    }
 		return ApiResponse.success(adminUser);

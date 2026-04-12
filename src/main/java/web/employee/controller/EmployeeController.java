@@ -32,10 +32,10 @@ public class EmployeeController {
 			}
 			HttpSession session = req.getSession();
 			session.setAttribute("employee", employee);
-			String targetPath = (String) session.getAttribute("targetPath");
+			String frontUserTargetPath = (String) session.getAttribute("frontUserTargetPath");
 			// 確人有無欲跳轉網址
-			if (targetPath != null) {
-				return new ApiResponse<>(1,targetPath,employee);
+			if (frontUserTargetPath != null) {
+				return new ApiResponse<>(1,frontUserTargetPath,employee);
 			}
 			return ApiResponse.success(employee);
 		}
@@ -53,7 +53,7 @@ public class EmployeeController {
 			Employee employee = (Employee) session.getAttribute("employee");
 			// 如果未登入傳入當前網址
 			if (employee == null) {
-				session.setAttribute("targetPath", reqData.get("targetPath"));
+				session.setAttribute("frontUserTargetPath", reqData.get("frontUserTargetPath"));
 		        return new ApiResponse<>(-999, "請重新登入", null); 
 		    }
 			return ApiResponse.success(employee);
