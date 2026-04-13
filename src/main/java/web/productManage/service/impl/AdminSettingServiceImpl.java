@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import core.annotation.DbOperation;
 import core.entity.GlobalSetting;
 import core.enums.GlobalSettingKeyEnum;
 import core.exception.BusinessException;
@@ -30,6 +31,7 @@ public class AdminSettingServiceImpl implements AdminSettingService {
 	}
 
 	@Override
+	@DbOperation(action = "修改全域點數設定")
 	public void saveGlobalSettings(GlobalSettingDto dto) {
 		updateSetting(GlobalSettingKeyEnum.GLOBAL_ON_TIME_BONUS.getKey(), dto.getOnTimeBonus());
 		updateSetting(GlobalSettingKeyEnum.GLOBAL_LATE_PENALTY.getKey(), dto.getLatePenalty());

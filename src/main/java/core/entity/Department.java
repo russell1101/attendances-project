@@ -44,10 +44,10 @@ public class Department implements Serializable {
 	@Column(name = "work_end_time", nullable = false)
 	private Time workEndTime;
 
-	@Column(name = "on_time_bonus_points", nullable = false)
+	@Column(name = "on_time_bonus_points")
 	private BigDecimal onTimeBonusPoints;
 
-	@Column(name = "late_penalty_points", nullable = false)
+	@Column(name = "late_penalty_points")
 	private BigDecimal latePenaltyPoints;
 
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")

@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import core.annotation.DbOperation;
 import core.entity.Employee;
 import core.exception.BusinessException;
 import web.employee.dao.EmployeeDao;
@@ -54,6 +55,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 	
 	@Override
+	@DbOperation(action = "新增員工")
 	public int saveEmployee(Employee employee) {
 		String randomPassword = RandomStringUtils.secureStrong().nextAlphanumeric(12);
 		emailUtil.sendPasswordEmail(employee.getEmail(), randomPassword);
@@ -62,12 +64,14 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 	
 	@Override
+	@DbOperation(action = "修改員工")
 	public int updateEmployee(Employee employee) {
 		return employeeDao.upsert(employee);
 	}
 	
 	// 員工修改為停用狀態
 	@Override
+	@DbOperation(action = "停用員工")
 	public int deleteEmployee(Long id) {
 		Employee employee = employeeDao.selectById(id);
 		employee.setIsActive(false);

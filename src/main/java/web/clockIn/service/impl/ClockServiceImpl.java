@@ -88,18 +88,19 @@ public class ClockServiceImpl implements ClockService {
 
 		// 決定點數
 		BigDecimal pointsToAward;
-		if (isOnTime) { //
+		if (isOnTime) {
 			pointsToAward = dept.getOnTimeBonusPoints();
-			if (pointsToAward.compareTo(BigDecimal.ZERO) == 0) {
+			if (pointsToAward == null || pointsToAward.compareTo(BigDecimal.ZERO) == 0) {
 				pointsToAward = new BigDecimal(
 						attendanceDao.getGlobalSettingValue(GlobalSettingKeyEnum.GLOBAL_ON_TIME_BONUS.getKey()));
 			}
 		} else { // 遲到
 			pointsToAward = dept.getLatePenaltyPoints();
-			if (pointsToAward.compareTo(BigDecimal.ZERO) == 0) {
+			if (pointsToAward == null || pointsToAward.compareTo(BigDecimal.ZERO) == 0) {
 				pointsToAward = new BigDecimal(
 						attendanceDao.getGlobalSettingValue(GlobalSettingKeyEnum.GLOBAL_LATE_PENALTY.getKey()));
 			}
+			pointsToAward = pointsToAward.negate();
 		}
 
 		// 儲存打卡紀錄

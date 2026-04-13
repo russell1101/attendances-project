@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import core.annotation.DbOperation;
 import core.entity.Product;
 import core.exception.BusinessException;
 import web.productManage.dao.AdminProductDao;
@@ -54,6 +55,7 @@ public class AdminProductServiceImpl implements AdminProductService {
 
 	// 新增或修改商品（productId 為 null → 新增，否則 → 修改）
 	@Override
+	@DbOperation(action = "新增或修改商品")
 	public void saveProduct(AdminProductDto dto) {
 		if (dto.getProductId() == null) {
 			// 新增

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import core.annotation.DbOperation;
 import core.entity.Department;
 import web.employee.dao.DepartmentDao;
 import web.employee.dao.EmployeeDao;
@@ -20,11 +21,13 @@ public class DepartmentServiceImpl implements DepartmentService{
 	private EmployeeDao employeeDao;
 	
 	@Override
+	@DbOperation(action = "新增或修改部門")
 	public int saveDepartment(Department department) {
 		return departmentDao.upsert(department);
 	}
 
 	@Override
+	@DbOperation(action = "停用部門")
 	public int deleteDepartment(Long id) {
 		Department department = departmentDao.selectById(id);
 		
