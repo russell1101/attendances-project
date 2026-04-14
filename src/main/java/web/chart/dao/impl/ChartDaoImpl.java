@@ -116,7 +116,7 @@ public class ChartDaoImpl implements ChartDao {
 					+ "AND clock_out_time IS NOT NULL " 
 					+ "ORDER BY work_date";
 
-			List<Object[]> results = session.createNativeQuery(sql, Object[].class)
+			List<Object[]> results = session.createNativeQuery(sql)
 					.setParameter("empId", empId)
 					.setParameter("startDate", startDate)
 					.setParameter("endDate", endDate).getResultList();
