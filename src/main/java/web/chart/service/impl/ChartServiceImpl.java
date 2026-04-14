@@ -76,7 +76,6 @@ public class ChartServiceImpl implements ChartService {
         List<Map<String, Object>> data = dao.getAttendanceList(startDate, endDate, deptId, empId);
         
         StringBuilder sb = new StringBuilder();
-        sb.append('\ufeff');
         sb.append("姓名,部門,日期,上班打卡,下班打卡,狀態\n");
         
         if (data != null && !data.isEmpty()) {
