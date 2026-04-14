@@ -28,7 +28,6 @@ public class DIcsvController {
 
 		String csv = service.getCsvString(startDate, endDate, deptId, empId);
 
-		// 全部用 OutputStream 寫，不要混用 getWriter()
 		byte[] bom = new byte[] { (byte) 0xEF, (byte) 0xBB, (byte) 0xBF };
 		byte[] content = csv.getBytes("UTF-8");
 
