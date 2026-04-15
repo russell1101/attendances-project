@@ -9,10 +9,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+//@ComponentScan(basePackages = { "web", "core" }, excludeFilters = @ComponentScan.Filter(Controller.class))
+//@EnableTransactionManagement
+//@Import(MailConfig.class)
 @Configuration
-@ComponentScan(basePackages = { "web", "core" }, excludeFilters = @ComponentScan.Filter(Controller.class))
-@EnableTransactionManagement
-@Import(MailConfig.class)
 public class EncryptionConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
