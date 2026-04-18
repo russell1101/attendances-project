@@ -52,7 +52,7 @@ public class DbAuditAspect {
 			// 取得執行的方法與傳入的參數
 			String className = joinPoint.getTarget().getClass().getSimpleName();
 			String methodName = joinPoint.getSignature().getName();
-			String arguments = Arrays.toString(joinPoint.getArgs());
+			String arguments = sanitizeArgs(joinPoint.getArgs());
 
 			// 從 Session 取得當前操作者
 			String operator = "系統/未登入";
@@ -78,5 +78,29 @@ public class DbAuditAspect {
 			System.err.println("【Audit AOP】記錄失敗: " + e.getMessage());
 			e.printStackTrace();
 		}
+	}
+
+
+	private String sanitizeArgs(Object[] args) {
+		if (args == null || args.length == 0) return "[]";
+		StringBuilder sb = new StringBuilder("[");
+		for (int i = 0; i < args.length; i++) {
+			if (i > 0) sb.append(", ");
+			sb.append(sanitizeArg(args[i]));
+		}
+		sb.append("]");
+		return sb.toString();
+	}
+
+	private String sanitizeArg(Object arg) {
+		if (arg == null) return "null";
+		if (arg instanceof byte[]) {
+			return "[byte[] length=" + ((byte[]) arg).length + "]";
+		}
+		String str = arg.toString();
+		if (str.length() > 500) {
+			return str.substring(0, 50) + "...(truncated, length=" + str.length() + ")";
+		}
+		return str;
 	}
 }
